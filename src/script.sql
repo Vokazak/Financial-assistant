@@ -2,7 +2,8 @@ create table sys_user (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
     surname VARCHAR(50) NOT NULL,
-    password INT NOT NULL
+    password VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL
 );
 
 create table account (
@@ -31,12 +32,12 @@ create table transaction_to_category (
     category_id INT REFERENCES category(id)
 );
 
-insert into sys_user (name, surname, password) VALUES ('Artyom', 'Vasiliev', 1234); --1
-insert into sys_user (name, surname, password) VALUES ('Vladimir', 'Kondratiev', 4321); --2
-insert into sys_user (name, surname, password) VALUES ('Anton', 'Vlasov', 8902); --3
-insert into sys_user (name, surname, password) VALUES ('Polina', 'Grigorieva', 8475); --4
-insert into sys_user (name, surname, password) VALUES ('Nikita', 'Andreev', 6037); --5
-insert into sys_user (name, surname, password) VALUES ('Inna', 'Vdovina', 9341); --6
+insert into sys_user (name, surname, password, email) VALUES ('Artyom', 'Vasiliev', '12o34p', 'artvas@gmail.com'); --1
+insert into sys_user (name, surname, password, email) VALUES ('Vladimir', 'Kondratiev', '4r32y1', 'vladkond@gmail.com'); --2
+insert into sys_user (name, surname, password, email) VALUES ('Anton', 'Vlasov', 's89f02', 'antvlas@gmail.com'); --3
+insert into sys_user (name, surname, password, email) VALUES ('Polina', 'Grigorieva', '8h475L', 'polgrig@gmail.com'); --4
+insert into sys_user (name, surname, password, email) VALUES ('Nikita', 'Andreev', '6t037i', 'nikandr@gmail.com'); --5
+insert into sys_user (name, surname, password, email) VALUES ('Inna', 'Vdovina', '9t3b41', 'invdov@gmail.com'); --6
 
 insert into account (name, user_id, balance) VALUES ('Acc for salary', 1, 69000.23); --1
 insert into account (name, user_id, balance) VALUES ('Acc for everyday trans', 1, 89000.50); --2
