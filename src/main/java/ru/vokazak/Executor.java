@@ -121,12 +121,12 @@ public class Executor {
             statement.close();
 
             PreparedStatement ps = connection.prepareStatement(
-                        "delete from account a\n" +
-                                "using sys_user u\n" +
-                                "where u.id =  a.user_id\n" +
+                        "delete from account as a\n" +
+                                "where a.user_id = ?\n" +
                                 "  and a.name = ?;"
             );
-            ps.setString(1, name);
+            ps.setInt(1, currentUser.getId());
+            ps.setString(2, name);
             ps.execute();
             ps.close();
             System.out.println("Your account was successfully deleted");
@@ -144,9 +144,8 @@ public class Executor {
             ResultSet rs = statement.executeQuery("select\n" +
                     "    a.name,\n" +
                     "    a.balance\n" +
-                    "from sys_user as u\n" +
-                    "    left join account as a on u.id = a.user_id\n" +
-                    "where u.email = '" + currentUser.getEmail() + "';");
+                    "from account as a\n" +
+                    "where a.user_id = '" + currentUser.getId() + "';");
 
             while (rs.next()) {
                 System.out.println(
