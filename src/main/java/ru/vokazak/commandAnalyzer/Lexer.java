@@ -1,4 +1,4 @@
-package ru.vokazak.CommandAnalyzer;
+package ru.vokazak.commandAnalyzer;
 
 import java.util.ArrayList;
 import java.util.List;

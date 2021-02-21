@@ -1,4 +1,4 @@
-package ru.vokazak.CommandAnalyzer;
+package ru.vokazak.commandAnalyzer;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -7,9 +7,14 @@ enum Lexemes {
 
     CMD_REGISTER("register"),
     CMD_LOGIN("login"),
-    CMD_GET_ACCS("show_acc_list"),
+
     CMD_CREATE_ACC("create_acc"),
     CMD_DELETE_ACC("del_acc"),
+    CMD_GET_ACCS("show_acc_list"),
+
+    CMD_CREATE_TRANS_TYPE("create_trans_type"),
+    CMD_DELETE_TRANS_TYPE("del_trans_type"),
+    CMD_MODIFY_TRANS_TYPE("modify_trans_type"),
 
     CMD_DISCONNECT("disconnect"),
 
