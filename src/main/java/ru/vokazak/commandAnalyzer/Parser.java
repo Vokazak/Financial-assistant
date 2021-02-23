@@ -1,4 +1,4 @@
-package ru.vokazak.CommandAnalyzer;
+package ru.vokazak.commandAnalyzer;
 
 import java.util.List;
 
@@ -27,6 +27,18 @@ public class Parser {
             case CMD_REGISTER:
                 checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_EMAIL, Lexemes.ARG_STRING, Lexemes.ARG_NAME, Lexemes.ARG_NAME);
                 return OperationType.REGISTER;
+
+            case CMD_CREATE_TRANS_TYPE:
+                checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_NAME);
+                return OperationType.CREATE_TRANS_TYPE;
+
+            case CMD_DELETE_TRANS_TYPE:
+                checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_NAME);
+                return OperationType.DELETE_TRANS_TYPE;
+
+            case CMD_MODIFY_TRANS_TYPE:
+                checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_NAME, Lexemes.ARG_NAME);
+                return OperationType.MODIFY_TRANS_TYPE;
 
             case CMD_DISCONNECT:
                 if (tokens.size() > 1) {

@@ -1,4 +1,4 @@
-package ru.vokazak.CommandAnalyzer;
+package ru.vokazak.commandAnalyzer;
 
 public class Token {
 
