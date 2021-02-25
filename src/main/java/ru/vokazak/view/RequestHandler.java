@@ -25,7 +25,7 @@ public class RequestHandler {
         lexer = new Lexer();
         parser = new Parser();
 
-        authService = new AuthService();
+        authService = ServiceFactory.getAuthService();
         accService = new AccService();
         categoryService = new CategoryService();
     }
