@@ -23,6 +23,6 @@ public class CategoryDTO {
 
     @Override
     public String toString() {
-        return "Transaction \"" + name + " (id = " + id;
+        return "Transaction type - \"" + name + "\" (id = " + id + ")";
     }
 }

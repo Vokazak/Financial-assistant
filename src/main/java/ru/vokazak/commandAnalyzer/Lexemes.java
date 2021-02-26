@@ -11,6 +11,7 @@ enum Lexemes {
     CMD_CREATE_ACC("create_acc"),
     CMD_DELETE_ACC("del_acc"),
     CMD_GET_ACCS("show_acc_list"),
+    CMD_GET_TRANSACTIONS_STATS("show_stats_for"),
 
     CMD_CREATE_TRANS_TYPE("create_trans_type"),
     CMD_DELETE_TRANS_TYPE("del_trans_type"),

@@ -8,6 +8,7 @@ public enum OperationType {
     CREATE_ACC,
     DELETE_ACC,
     GET_ACCS,
+    GET_TRANS_STATS,
 
     CREATE_TRANS_TYPE,
     DELETE_TRANS_TYPE,
