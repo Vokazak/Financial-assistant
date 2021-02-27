@@ -15,9 +15,9 @@ public class CategoryService {
     private final CategoryDao categoryDao;
     private final CategoryModelToCategoryDTOConverter converter;
 
-    public CategoryService() {
-        this.categoryDao = new CategoryDao();
-        this.converter = new CategoryModelToCategoryDTOConverter();
+    public CategoryService(CategoryDao categoryDao, CategoryModelToCategoryDTOConverter converter) {
+        this.categoryDao = categoryDao;
+        this.converter = converter;
     }
 
     public CategoryDTO create(String name) {
@@ -61,13 +61,7 @@ public class CategoryService {
 
         Set<Map.Entry<CategoryModel, BigDecimal>> entrySet = categoryStats.entrySet();
         entrySet.forEach(
-                c -> {
-                    CategoryDTO category = new CategoryDTO();
-                    category.setId(c.getKey().getId());
-                    category.setName(c.getKey().getName());
-
-                    resultMap.put(category, c.getValue());
-                }
+                c -> resultMap.put(converter.convert(c.getKey()), c.getValue())
         );
 
         return resultMap;

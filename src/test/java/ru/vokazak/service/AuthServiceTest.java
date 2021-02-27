@@ -26,9 +26,9 @@ public class AuthServiceTest {
     public void auth_UserNotFound() {
         when(digestService.hex("password"))
                 .thenReturn("hex");
+
         when(userDao.findByEmailAndHash("artvas@gmail.com", "hex"))
                 .thenReturn(null);
-
 
         assertThrows(UnsuccessfulCommandExecutionExc.class, ()-> {
             subj.auth("artvas@gmail.com", "password");
@@ -73,6 +73,49 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void register() {
+    public void register_successful() {
+        when(digestService.hex("password"))
+                .thenReturn("hex");
+
+        UserModel userModel = new UserModel();
+        userModel.setId(1);
+        userModel.setEmail("artvas@gmail.com");
+        userModel.setPassword("hex");
+        userModel.setName("Artyom");
+        userModel.setSurname("Vasiliev");
+        when(userDao.insert("Artyom", "Vasiliev", "artvas@gmail.com", "hex"))
+                .thenReturn(userModel);
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(1);
+        userDTO.setEmail("artvas@gmail.com");
+        userDTO.setName("Artyom");
+        when(userDTOConverter.convert(userModel)).thenReturn(userDTO);
+
+        UserDTO user = subj.register("artvas@gmail.com", "password", "Artyom", "Vasiliev");
+        assertNotNull(user);
+        assertEquals(userDTO, user);
+
+        verify(digestService, times(1)).hex("password");
+        verify(userDao, times(1)).insert("Artyom", "Vasiliev", "artvas@gmail.com", "hex");
+        verify(userDTOConverter, times(1)).convert(userModel);
+    }
+
+    @Test
+    public void register_unsuccessful() {
+        when(digestService.hex("password"))
+                .thenReturn("hex");
+
+        when(userDao.insert("Artyom", "Vasiliev", "artvas@gmail.com", "hex"))
+                .thenReturn(null);
+
+        assertThrows(UnsuccessfulCommandExecutionExc.class, ()-> {
+            subj.register("artvas@gmail.com", "password", "Artyom", "Vasiliev");
+        });
+
+        verify(digestService, times(1)).hex("password");
+        verify(userDao, times(1)).insert("Artyom", "Vasiliev", "artvas@gmail.com", "hex");
+
+        verifyZeroInteractions(userDTOConverter);
     }
 }

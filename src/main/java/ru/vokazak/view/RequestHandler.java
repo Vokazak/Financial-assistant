@@ -26,8 +26,8 @@ public class RequestHandler {
         parser = new Parser();
 
         authService = ServiceFactory.getAuthService();
-        accService = new AccService();
-        categoryService = new CategoryService();
+        accService = ServiceFactory.getAccService();
+        categoryService = ServiceFactory.getCategoryService();
     }
 
     public boolean processNewRequest() throws UnsuccessfulCommandExecutionExc {

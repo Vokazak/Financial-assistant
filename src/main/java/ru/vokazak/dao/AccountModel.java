@@ -1,6 +1,7 @@
 package ru.vokazak.dao;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class AccountModel {
 
@@ -39,5 +40,21 @@ public class AccountModel {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AccountModel that = (AccountModel) o;
+        return id == that.id &&
+                userId == that.userId &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(balance, that.balance);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, userId, balance);
     }
 }

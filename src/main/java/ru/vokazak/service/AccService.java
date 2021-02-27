@@ -14,9 +14,9 @@ public class AccService {
     private final AccountDao accountDao;
     private final AccModelToAccDTOConverter accDTOConverter;
 
-    public AccService() {
-        this.accountDao = new AccountDao();
-        this.accDTOConverter = new AccModelToAccDTOConverter();
+    public AccService(AccountDao accountDao, AccModelToAccDTOConverter accDTOConverter) {
+        this.accountDao = accountDao;
+        this.accDTOConverter = accDTOConverter;
     }
 
     public AccountDTO create(String name, BigDecimal balance, long userId) {
