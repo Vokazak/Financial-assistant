@@ -14,9 +14,9 @@ public class AccService {
     private final AccountDao accountDao;
     private final AccModelToAccDTOConverter accDTOConverter;
 
-    public AccService() {
-        this.accountDao = new AccountDao();
-        this.accDTOConverter = new AccModelToAccDTOConverter();
+    public AccService(AccountDao accountDao, AccModelToAccDTOConverter accDTOConverter) {
+        this.accountDao = accountDao;
+        this.accDTOConverter = accDTOConverter;
     }
 
     public AccountDTO create(String name, BigDecimal balance, long userId) {
@@ -39,7 +39,7 @@ public class AccService {
         return accDTOConverter.convert(accToDelete);
     }
 
-    public List<AccountDTO> find(long userId) {
+    public List<AccountDTO> getAccList(long userId) {
 
         List<AccountModel> accountModelList = accountDao.findByUserId(userId);
         if (accountModelList == null) {

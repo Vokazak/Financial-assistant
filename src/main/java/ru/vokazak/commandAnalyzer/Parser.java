@@ -5,13 +5,15 @@ import java.util.List;
 public class Parser {
 
     public OperationType parse(List<Token> tokens) {
+        List<Token> args = tokens.subList(1, tokens.size());
+
         switch (tokens.get(0).getLexeme()) {
             case CMD_CREATE_ACC:
-                checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_STRING, Lexemes.ARG_NUM);
+                checkArgs(args, Lexemes.ARG_STRING, Lexemes.ARG_NUM);
                 return OperationType.CREATE_ACC;
 
             case CMD_DELETE_ACC:
-                checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_STRING);
+                checkArgs(args, Lexemes.ARG_STRING);
                 return OperationType.DELETE_ACC;
 
             case CMD_GET_ACCS:
@@ -21,24 +23,28 @@ public class Parser {
                 return OperationType.GET_ACCS;
 
             case CMD_LOGIN:
-                checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_EMAIL, Lexemes.ARG_STRING);
+                checkArgs(args, Lexemes.ARG_EMAIL, Lexemes.ARG_STRING);
                 return OperationType.LOGIN;
 
             case CMD_REGISTER:
-                checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_EMAIL, Lexemes.ARG_STRING, Lexemes.ARG_NAME, Lexemes.ARG_NAME);
+                checkArgs(args, Lexemes.ARG_EMAIL, Lexemes.ARG_STRING, Lexemes.ARG_NAME, Lexemes.ARG_NAME);
                 return OperationType.REGISTER;
 
             case CMD_CREATE_TRANS_TYPE:
-                checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_NAME);
+                checkArgs(args, Lexemes.ARG_NAME);
                 return OperationType.CREATE_TRANS_TYPE;
 
             case CMD_DELETE_TRANS_TYPE:
-                checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_NAME);
+                checkArgs(args, Lexemes.ARG_NAME);
                 return OperationType.DELETE_TRANS_TYPE;
 
             case CMD_MODIFY_TRANS_TYPE:
-                checkArgs(tokens.subList(1, tokens.size()), Lexemes.ARG_NAME, Lexemes.ARG_NAME);
+                checkArgs(args, Lexemes.ARG_NAME, Lexemes.ARG_NAME);
                 return OperationType.MODIFY_TRANS_TYPE;
+
+            case CMD_GET_TRANSACTIONS_STATS:
+                checkArgs(args, Lexemes.ARG_NUM);
+                return OperationType.GET_TRANS_STATS;
 
             case CMD_DISCONNECT:
                 if (tokens.size() > 1) {

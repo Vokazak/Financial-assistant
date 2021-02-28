@@ -11,10 +11,10 @@ public class AuthService {
     private final DigestService digestService;
     private final UserModelToUserDTOConverter userDTOConverter;
 
-    public AuthService() {
-        this.userDao = new UserDao();
-        this.digestService = new Md5DigestService();
-        this.userDTOConverter = new UserModelToUserDTOConverter();
+    public AuthService(UserDao userDao, DigestService digestService, UserModelToUserDTOConverter userDTOConverter) {
+        this.userDao = userDao;
+        this.digestService = digestService;
+        this.userDTOConverter = userDTOConverter;
     }
 
     public UserDTO auth(String email, String password) {

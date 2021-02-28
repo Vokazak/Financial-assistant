@@ -20,6 +20,9 @@ disconnect
 create_trans_type
 del_trans_type
 modify_trans_type
+show_stats_for
+
+login artvas@gmail.com 12o34p
 */
 
 public class Main {

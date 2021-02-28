@@ -5,7 +5,10 @@ import com.zaxxer.hikari.HikariDataSource;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import javax.sql.DataSource;
+import java.math.BigDecimal;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CategoryDao {
 
@@ -91,7 +94,6 @@ public class CategoryDao {
             }
             long id = rs.getLong("id");
 
-            //UPDATE mytable SET a = 5, b = 3, c = 1 WHERE a > 0;
             PreparedStatement ps = connection.prepareStatement(
                     "update category set trans_type = ? where trans_type = ?;"
             );
@@ -121,6 +123,52 @@ public class CategoryDao {
 
         } catch (SQLException e) {
             throw new UnsuccessfulCommandExecutionExc(e);
+        }
+    }
+
+    public Map<CategoryModel, BigDecimal> sumMoneyForEachCategory(long userId, int days) {
+
+        try (Connection connection = dataSource.getConnection()){
+
+            PreparedStatement ps = connection.prepareStatement(
+                    "select\n" +
+                            "    c.id,\n" +
+                            "    c.trans_type,\n" +
+                            "    sum(trans_money)\n" +
+                            "from sys_user as u\n" +
+                            "    left join account as a on u.id = a.user_id\n" +
+                            "    left join transaction as t on a.id = t.acc_from or a.id = t.acc_to\n" +
+                            "    left join transaction_to_category ttc on t.id = ttc.transaction_id\n" +
+                            "    left join category c on ttc.category_id = c.id\n" +
+                            "where u.id = ?" +
+                            "    and t.trans_date between (CURRENT_TIMESTAMP - make_interval(days := ?)) and CURRENT_TIMESTAMP\n" +
+                            "group by c.trans_type, c.id;"
+            );
+            ps.setLong(1, userId);
+            ps.setInt(2, days);
+
+            ResultSet rs = ps.executeQuery();
+
+            Map<CategoryModel, BigDecimal> resultMap = new HashMap<>();
+
+            while (rs.next()) {
+                CategoryModel categoryModel = new CategoryModel();
+                categoryModel.setId(rs.getLong("id"));
+                categoryModel.setName(rs.getString("trans_type"));
+
+                BigDecimal money = rs.getBigDecimal("sum");
+
+                resultMap.put(categoryModel, money);
+            }
+
+            if (resultMap.isEmpty()) {
+                throw new UnsuccessfulCommandExecutionExc("No transactions in Data Base for " + days + " days period");
+            }
+
+            return resultMap;
+
+        } catch (SQLException e) {
+            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
         }
     }
 

@@ -5,14 +5,14 @@ import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import ru.vokazak.service.*;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class RequestHandler {
 
     private final Scanner scanner;
     private final Lexer lexer;
     private final Parser parser;
+
     private final AuthService authService;
     private final AccService accService;
     private final CategoryService categoryService;
@@ -25,9 +25,9 @@ public class RequestHandler {
         lexer = new Lexer();
         parser = new Parser();
 
-        authService = new AuthService();
-        accService = new AccService();
-        categoryService = new CategoryService();
+        authService = ServiceFactory.getAuthService();
+        accService = ServiceFactory.getAccService();
+        categoryService = ServiceFactory.getCategoryService();
     }
 
     public boolean processNewRequest() throws UnsuccessfulCommandExecutionExc {
@@ -64,7 +64,7 @@ public class RequestHandler {
                 case GET_ACCS:
                     checkAuthorisation();
 
-                    List<AccountDTO> accountList = accService.find(currentUser.getId());
+                    List<AccountDTO> accountList = accService.getAccList(currentUser.getId());
                     System.out.println(currentUser.getName() + "'s accounts:");
                     accountList.forEach(System.out::println);
                     return true;
@@ -86,6 +86,17 @@ public class RequestHandler {
                     CategoryDTO categoryDTO2 = categoryService.modify(tokens.get(1).value(), tokens.get(2).value());
                     System.out.println("Transaction type \"" + tokens.get(1).value()  + "\" (id = " + categoryDTO2.getId()
                             + ") was successfully renamed to " + categoryDTO2.getName());
+                    return true;
+
+                case GET_TRANS_STATS:
+                    checkAuthorisation();
+
+                    int days = (int) Double.parseDouble(tokens.get(1).value());
+                    Map<CategoryDTO, BigDecimal> categoryStats = categoryService.getMoneySpentForEachTransType(currentUser.getId(), days);
+
+                    System.out.println(currentUser.getName() + "'s transaction stats:");
+                    categoryStats.entrySet().forEach(System.out::println);
+
                     return true;
 
                 case DISCONNECT:
