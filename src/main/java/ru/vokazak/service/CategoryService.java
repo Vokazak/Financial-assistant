@@ -6,9 +6,11 @@ import ru.vokazak.dao.CategoryModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CategoryService {
 
@@ -50,20 +52,16 @@ public class CategoryService {
         return converter.convert(categoryModel);
     }
 
-    public HashMap<CategoryDTO, BigDecimal> getMoneySpentForEachTransType(long userId, int days) {
+    public Map<CategoryDTO, BigDecimal> getMoneySpentForEachTransType(long userId, int days) {
 
-        HashMap<CategoryModel, BigDecimal> categoryStats = categoryDao.sumMoneyForEachCategory(userId, days);
+        Map<CategoryModel, BigDecimal> categoryStats = categoryDao.sumMoneyForEachCategory(userId, days);
         if (categoryStats == null) {
             throw new UnsuccessfulCommandExecutionExc("Error in CategoryService while deleting category");
         }
 
-        HashMap<CategoryDTO, BigDecimal> resultMap = new HashMap<>();
-
-        Set<Map.Entry<CategoryModel, BigDecimal>> entrySet = categoryStats.entrySet();
-        entrySet.forEach(
-                c -> resultMap.put(converter.convert(c.getKey()), c.getValue())
-        );
-
-        return resultMap;
+        return categoryStats
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(e -> converter.convert(e.getKey()), Map.Entry::getValue));
     }
 }

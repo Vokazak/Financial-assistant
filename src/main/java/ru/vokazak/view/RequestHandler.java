@@ -92,7 +92,7 @@ public class RequestHandler {
                     checkAuthorisation();
 
                     int days = (int) Double.parseDouble(tokens.get(1).value());
-                    HashMap<CategoryDTO, BigDecimal> categoryStats = categoryService.getMoneySpentForEachTransType(currentUser.getId(), days);
+                    Map<CategoryDTO, BigDecimal> categoryStats = categoryService.getMoneySpentForEachTransType(currentUser.getId(), days);
 
                     System.out.println(currentUser.getName() + "'s transaction stats:");
                     categoryStats.entrySet().forEach(System.out::println);

@@ -7,9 +7,8 @@ import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 public class CategoryDao {
 
@@ -127,7 +126,7 @@ public class CategoryDao {
         }
     }
 
-    public HashMap<CategoryModel, BigDecimal> sumMoneyForEachCategory(long userId, int days) {
+    public Map<CategoryModel, BigDecimal> sumMoneyForEachCategory(long userId, int days) {
 
         try (Connection connection = dataSource.getConnection()){
 
@@ -150,7 +149,7 @@ public class CategoryDao {
 
             ResultSet rs = ps.executeQuery();
 
-            HashMap<CategoryModel, BigDecimal> resultMap = new HashMap<>();
+            Map<CategoryModel, BigDecimal> resultMap = new HashMap<>();
 
             while (rs.next()) {
                 CategoryModel categoryModel = new CategoryModel();

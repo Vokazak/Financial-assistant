@@ -12,6 +12,7 @@ import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -138,7 +139,7 @@ public class CategoryServiceTest {
         categoryModel2.setId(2);
         categoryModel2.setName("Purchase");
 
-        HashMap<CategoryModel, BigDecimal> categoryStats = new HashMap<>();
+        Map<CategoryModel, BigDecimal> categoryStats = new HashMap<>();
         categoryStats.put(categoryModel1, new BigDecimal("123.4"));
         categoryStats.put(categoryModel2, new BigDecimal("432.1"));
 
@@ -152,14 +153,14 @@ public class CategoryServiceTest {
         categoryDTO2.setId(2);
         categoryDTO2.setName("Purchase");
 
-        HashMap<CategoryDTO, BigDecimal> accountDTOMap = new HashMap<>();
+        Map<CategoryDTO, BigDecimal> accountDTOMap = new HashMap<>();
         accountDTOMap.put(categoryDTO1, new BigDecimal("123.4"));
         accountDTOMap.put(categoryDTO2, new BigDecimal("432.1"));
 
         when(converter.convert(categoryModel1)).thenReturn(categoryDTO1);
         when(converter.convert(categoryModel2)).thenReturn(categoryDTO2);
 
-        HashMap<CategoryDTO, BigDecimal> result = subj.getMoneySpentForEachTransType(1, 60);
+        Map<CategoryDTO, BigDecimal> result = subj.getMoneySpentForEachTransType(1, 60);
         assertNotNull(result);
         assertEquals(result, accountDTOMap);
 
