@@ -1,11 +1,7 @@
 package ru.vokazak.service;
 
-import ru.vokazak.converter.AccModelToAccDTOConverter;
-import ru.vokazak.converter.CategoryModelToCategoryDTOConverter;
-import ru.vokazak.converter.UserModelToUserDTOConverter;
-import ru.vokazak.dao.AccountDao;
-import ru.vokazak.dao.CategoryDao;
-import ru.vokazak.dao.UserDao;
+import ru.vokazak.converter.ConverterFactory;
+import ru.vokazak.dao.DaoFactory;
 
 public class ServiceFactory {
 
@@ -14,9 +10,9 @@ public class ServiceFactory {
     public static AuthService getAuthService() {
         if (authService == null) {
             authService = new AuthService(
-                    new UserDao(),
-                    new Md5DigestService(),
-                    new UserModelToUserDTOConverter()
+                    DaoFactory.getUserDao(),
+                    getDigestService(),
+                    ConverterFactory.getUserModelUserDTOConverter()
             );
         }
         return authService;
@@ -27,8 +23,8 @@ public class ServiceFactory {
     public static AccService getAccService() {
         if (accService == null) {
             accService = new AccService(
-                    new AccountDao(),
-                    new AccModelToAccDTOConverter()
+                    DaoFactory.getAccountDao(),
+                    ConverterFactory.getAccountModelAccountDTOConverter()
             );
         }
         return accService;
@@ -39,12 +35,19 @@ public class ServiceFactory {
     public static CategoryService getCategoryService() {
         if (categoryService == null) {
             categoryService = new CategoryService(
-                    new CategoryDao(),
-                    new CategoryModelToCategoryDTOConverter()
+                    DaoFactory.getCategoryDao(),
+                    ConverterFactory.getCategoryModelCategoryDTOConverter()
             );
         }
         return categoryService;
     }
 
-    private ServiceFactory() {}
+    private static DigestService digestService;
+    public static DigestService getDigestService() {
+        if (digestService == null) {
+            digestService = new Md5DigestService();
+        }
+
+        return digestService;
+    }
 }

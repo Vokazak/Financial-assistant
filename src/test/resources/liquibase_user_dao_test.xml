@@ -1,0 +1,46 @@
+<databaseChangeLog
+
+
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <include file="liquibase.xml"></include>
+
+    <changeSet id="init" author="vokazak">
+        <createTable tableName="sys_user">
+
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="email" type="varchar(255)">
+                <constraints unique="true" nullable="false" />
+            </column>
+
+            <column name="password" type="varchar(255)">
+                <constraints unique="false" nullable="false" />
+            </column>
+
+            <column name="name" type="varchar(255)">
+                <constraints unique="false" nullable="false" />
+            </column>
+
+            <column name="surname" type="varchar(255)">
+                <constraints unique="false" nullable="false" />
+            </column>
+
+        </createTable>
+
+        <insert tableName="sys_user">
+            <column name="email">invdov@gmail.com</column>
+            <column name="password">65fcbb39532c342a6a3c92fa9acf1157</column>
+            <column name="name">Inna</column>
+            <column name="surname">Vdovina</column>
+        </insert>
+    </changeSet>
+
+    
+</databaseChangeLog>

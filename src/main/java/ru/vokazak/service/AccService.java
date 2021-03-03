@@ -1,6 +1,6 @@
 package ru.vokazak.service;
 
-import ru.vokazak.converter.AccModelToAccDTOConverter;
+import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.AccountDao;
 import ru.vokazak.dao.AccountModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
@@ -12,9 +12,9 @@ import java.util.List;
 public class AccService {
 
     private final AccountDao accountDao;
-    private final AccModelToAccDTOConverter accDTOConverter;
+    private final Converter<AccountModel, AccountDTO> accDTOConverter;
 
-    public AccService(AccountDao accountDao, AccModelToAccDTOConverter accDTOConverter) {
+    public AccService(AccountDao accountDao, Converter<AccountModel, AccountDTO> accDTOConverter) {
         this.accountDao = accountDao;
         this.accDTOConverter = accDTOConverter;
     }

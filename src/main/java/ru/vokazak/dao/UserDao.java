@@ -1,7 +1,5 @@
 package ru.vokazak.dao;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import javax.sql.DataSource;
@@ -9,19 +7,10 @@ import java.sql.*;
 
 public class UserDao {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USER = "postgres";
-    private static final String PASS = "34127856";
-
     private final DataSource dataSource;
 
-    public UserDao() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(URL);
-        config.setUsername(USER);
-        config.setPassword(PASS);
-
-        dataSource = new HikariDataSource(config);
+    public UserDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public UserModel findByEmailAndHash(String email, String hash) {

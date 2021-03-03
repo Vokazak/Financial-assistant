@@ -1,23 +1,20 @@
 package ru.vokazak.service;
 
-import ru.vokazak.converter.CategoryModelToCategoryDTOConverter;
+import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.CategoryDao;
 import ru.vokazak.dao.CategoryModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class CategoryService {
 
     private final CategoryDao categoryDao;
-    private final CategoryModelToCategoryDTOConverter converter;
+    private final Converter<CategoryModel, CategoryDTO> converter;
 
-    public CategoryService(CategoryDao categoryDao, CategoryModelToCategoryDTOConverter converter) {
+    public CategoryService(CategoryDao categoryDao, Converter<CategoryModel, CategoryDTO> converter) {
         this.categoryDao = categoryDao;
         this.converter = converter;
     }

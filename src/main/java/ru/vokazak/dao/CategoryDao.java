@@ -12,19 +12,10 @@ import java.util.Map;
 
 public class CategoryDao {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USER = "postgres";
-    private static final String PASS = "34127856";
-
     private final DataSource dataSource;
 
-    public CategoryDao() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(URL);
-        config.setUsername(USER);
-        config.setPassword(PASS);
-
-        dataSource = new HikariDataSource(config);
+    public CategoryDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public CategoryModel insert(String name) {
