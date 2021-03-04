@@ -2,9 +2,11 @@ package ru.vokazak.converter;
 
 import ru.vokazak.dao.AccountModel;
 import ru.vokazak.dao.CategoryModel;
+import ru.vokazak.dao.TransModel;
 import ru.vokazak.dao.UserModel;
 import ru.vokazak.service.AccountDTO;
 import ru.vokazak.service.CategoryDTO;
+import ru.vokazak.service.TransDTO;
 import ru.vokazak.service.UserDTO;
 
 public class ConverterFactory {
@@ -34,5 +36,14 @@ public class ConverterFactory {
         }
 
         return accountModelAccountDTOConverter;
+    }
+
+    private static Converter<TransModel, TransDTO> transModelTransDTOConverter;
+    public static Converter<TransModel, TransDTO> getTransModelTransDTOConverter() {
+        if (transModelTransDTOConverter == null) {
+            transModelTransDTOConverter = new TransModelToTransDTOConverter();
+        }
+
+        return transModelTransDTOConverter;
     }
 }

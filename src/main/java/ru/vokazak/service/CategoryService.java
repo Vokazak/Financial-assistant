@@ -6,6 +6,8 @@ import ru.vokazak.dao.CategoryModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -41,7 +43,7 @@ public class CategoryService {
 
     public CategoryDTO modify(String oldName, String newName) {
 
-        CategoryModel categoryModel = categoryDao.modify(oldName, newName);
+        CategoryModel categoryModel = categoryDao.update(oldName, newName);
         if (categoryModel == null) {
             throw new UnsuccessfulCommandExecutionExc("Error in CategoryService while deleting category");
         }
@@ -60,5 +62,19 @@ public class CategoryService {
                 .entrySet()
                 .stream()
                 .collect(Collectors.toMap(e -> converter.convert(e.getKey()), Map.Entry::getValue));
+    }
+
+    public List<CategoryDTO> getAll() {
+        List<CategoryModel> categoryModelList = categoryDao.selectAll();
+        if (categoryModelList == null) {
+            throw new UnsuccessfulCommandExecutionExc("Error in AuthService while listing accounts");
+        }
+
+        List<CategoryDTO> result = new ArrayList<>();
+        categoryModelList.forEach(
+                c -> result.add(converter.convert(c))
+        );
+
+        return result;
     }
 }

@@ -1,6 +1,7 @@
 package ru.vokazak.view;
 
 import ru.vokazak.commandAnalyzer.*;
+import ru.vokazak.dao.AccountModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import ru.vokazak.service.*;
 
@@ -16,6 +17,7 @@ public class RequestHandler {
     private final AuthService authService;
     private final AccService accService;
     private final CategoryService categoryService;
+    private final TransService transService;
 
     private UserDTO currentUser;
     private String request;
@@ -28,6 +30,7 @@ public class RequestHandler {
         authService = ServiceFactory.getAuthService();
         accService = ServiceFactory.getAccService();
         categoryService = ServiceFactory.getCategoryService();
+        transService = ServiceFactory.getTransService();
     }
 
     public boolean processNewRequest() throws UnsuccessfulCommandExecutionExc {
@@ -99,6 +102,32 @@ public class RequestHandler {
 
                     return true;
 
+                case CREATE_TRANS:
+                    checkAuthorisation();
+
+                    String accFromName = tokens.get(2).value();
+                    String accToName = tokens.get(3).value();
+
+                    //if accFrom == NULL && accTo == NULL
+                    if (accFromName.equals(Lexemes.NULL.name()) && accToName.equals(Lexemes.NULL.name())) {
+                        throw new UnsuccessfulCommandExecutionExc("No accounts are attached to transaction");
+                    }
+
+                    if (accFromName.equals(accToName)) {
+                        throw new UnsuccessfulCommandExecutionExc("Transaction has no reason");
+                    }
+
+                    AccountDTO accFrom = getAccount(currentUser.getId(), accFromName);
+                    AccountDTO accTo = getAccount(currentUser.getId(), accToName);
+                    CategoryDTO category = getCategory(tokens.get(4).value());
+
+                    //name, accFrom, accTo, category, description, money
+                    TransDTO transaction = transService.createTransaction(
+                            tokens.get(1).value(), accFrom, accTo, category, new BigDecimal(tokens.get(5).value()));
+                    System.out.println("Transaction " + transaction.getId() + " was successfully created");
+                    System.out.println("\t" + transaction);
+                    return true;
+
                 case DISCONNECT:
                     System.out.println("Disconnected");
                     return false;
@@ -113,6 +142,33 @@ public class RequestHandler {
         if (currentUser == null) {
             throw new UnsuccessfulCommandExecutionExc("You must login/register first");
         }
+    }
+
+    private CategoryDTO getCategory(String name) {
+        List<CategoryDTO> categories = categoryService.getAll();
+        for (CategoryDTO c: categories) {
+            if (c.getName().equals(name)) {
+                return c;
+            }
+        }
+
+        throw new UnsuccessfulCommandExecutionExc("Category \"" + name + "\" does not exist");
+    }
+
+    private AccountDTO getAccount(long userId, String name) {
+        if (name.equals(Lexemes.NULL.name())) {
+            return null;
+        }
+
+        List<AccountDTO> accounts = accService.getAccList(userId);
+        for (AccountDTO a: accounts) {
+            if (a.getName().equals(name)) {
+                return a;
+            }
+        }
+
+        throw new UnsuccessfulCommandExecutionExc(currentUser.getName() + "'s account \"" + name + "\" does not exist");
+
     }
 
 }

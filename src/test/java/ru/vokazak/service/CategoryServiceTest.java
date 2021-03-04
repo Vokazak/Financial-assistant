@@ -101,7 +101,7 @@ public class CategoryServiceTest {
         categoryModel.setId(1);
         categoryModel.setName("Salary");
 
-        when(categoryDao.modify("Salary", "Income")).thenReturn(categoryModel);
+        when(categoryDao.update("Salary", "Income")).thenReturn(categoryModel);
 
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setId(1);
@@ -113,19 +113,19 @@ public class CategoryServiceTest {
         assertNotNull(category);
         assertEquals(categoryDTO, category);
 
-        verify(categoryDao, times(1)).modify("Salary", "Income");
+        verify(categoryDao, times(1)).update("Salary", "Income");
         verify(converter, times(1)).convert(categoryModel);
     }
 
     @Test
     public void modify_unsuccessful() {
-        when(categoryDao.modify("Salary" ,"Income")).thenReturn(null);
+        when(categoryDao.update("Salary" ,"Income")).thenReturn(null);
 
         assertThrows(UnsuccessfulCommandExecutionExc.class, () ->
                 subj.modify("Salary", "Income")
         );
 
-        verify(categoryDao, times(1)).modify("Salary", "Income");
+        verify(categoryDao, times(1)).update("Salary", "Income");
         verifyZeroInteractions(converter);
     }
 

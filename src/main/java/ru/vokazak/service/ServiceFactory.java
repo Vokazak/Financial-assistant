@@ -2,11 +2,11 @@ package ru.vokazak.service;
 
 import ru.vokazak.converter.ConverterFactory;
 import ru.vokazak.dao.DaoFactory;
+import ru.vokazak.atomicTransaction.TransRep;
 
 public class ServiceFactory {
 
     private static AuthService authService;
-
     public static AuthService getAuthService() {
         if (authService == null) {
             authService = new AuthService(
@@ -19,7 +19,6 @@ public class ServiceFactory {
     }
 
     private static AccService accService;
-
     public static AccService getAccService() {
         if (accService == null) {
             accService = new AccService(
@@ -31,7 +30,6 @@ public class ServiceFactory {
     }
 
     private static CategoryService categoryService;
-
     public static CategoryService getCategoryService() {
         if (categoryService == null) {
             categoryService = new CategoryService(
@@ -50,4 +48,23 @@ public class ServiceFactory {
 
         return digestService;
     }
+
+    private static TransService transService;
+    public static TransService getTransService() {
+        if (transService == null) {
+            transService = new TransService(
+                   new TransRep(
+                           DaoFactory.getDataSource(),
+                           DaoFactory.getAccountDao(),
+                           DaoFactory.getTransDao(),
+                           DaoFactory.getTransactionToCategoryDao()
+                   ),
+                    ConverterFactory.getTransModelTransDTOConverter()
+            );
+
+        }
+
+        return transService;
+    }
+
 }

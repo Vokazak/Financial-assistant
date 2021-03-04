@@ -46,6 +46,10 @@ public class Parser {
                 checkArgs(args, Lexemes.ARG_NUM);
                 return OperationType.GET_TRANS_STATS;
 
+            case CMD_CREATE_TRANSACTION:
+                checkArgs(args, Lexemes.ARG_STRING, Lexemes.ARG_STRING, Lexemes.ARG_STRING, Lexemes.ARG_STRING, Lexemes.ARG_NUM);
+                return OperationType.CREATE_TRANS;
+
             case CMD_DISCONNECT:
                 if (tokens.size() > 1) {
                     throw new IllegalArgumentException("\"disconnect\" can't have arguments");
@@ -64,7 +68,7 @@ public class Parser {
 
         for (int i = 0; i < expected.length; i++) {
             if (expected[i] != args.get(i).getLexeme()) {
-                throw new IllegalArgumentException("Wrong " + i + " argument, expected " + expected[i].name());
+                throw new IllegalArgumentException("Wrong " + i + " argument, expected " + expected[i].name() + ", found " + args.get(i).getLexeme());
             }
         }
 

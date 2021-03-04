@@ -47,6 +47,24 @@ public class DaoFactory {
         return accountDao;
     }
 
+    private static TransDao transDao;
+    public static TransDao getTransDao() {
+        if (transDao == null) {
+            transDao = new TransDao(getDataSource());
+        }
+
+        return transDao;
+    }
+
+    private static TransToCategoryDao transToCategoryDao;
+    public static TransToCategoryDao getTransactionToCategoryDao() {
+        if (transToCategoryDao == null) {
+            transToCategoryDao = new TransToCategoryDao(getDataSource());
+        }
+
+        return transToCategoryDao;
+    }
+
     private static DataSource dataSource;
     public static DataSource getDataSource() {
         if (dataSource == null) {

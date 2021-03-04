@@ -11,9 +11,18 @@ import java.util.List;
 public class AccountDao {
 
     private final DataSource dataSource;
+    private Savepoint savepoint;
 
     public AccountDao(DataSource dataSource) {
         this.dataSource = dataSource;
+
+        try {
+            Connection c = dataSource.getConnection();
+            c.setAutoCommit(false);
+            savepoint = c.setSavepoint();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public AccountModel insert(String name, BigDecimal balance, long userId) {
@@ -52,9 +61,58 @@ public class AccountDao {
         }
     }
 
+    public void update(Connection connection, long id, BigDecimal balance) {
+
+        /*try (Connection connection = dataSource.getConnection()) {
+
+            connection.setAutoCommit(false);
+
+
+            if (balance.compareTo(BigDecimal.ZERO) < 0) {
+                connection.rollback();
+                throw new UnsuccessfulCommandExecutionExc("Insufficient funds");
+            }
+
+            try {
+                PreparedStatement ps = connection.prepareStatement(
+                        "update account set balance = ? where id = ?;"
+                );
+                ps.setBigDecimal(1, balance);
+                ps.setLong(2, id);
+                ps.execute();
+
+                connection.commit();
+            } catch (SQLException e) {
+                connection.rollback(savepoint);
+                throw new UnsuccessfulCommandExecutionExc(e);
+            } finally {
+                connection.setAutoCommit(true);
+            }
+
+        } catch (SQLException e) {
+            throw new UnsuccessfulCommandExecutionExc("Exception while updating account", e);
+        }*/
+
+        if (balance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new UnsuccessfulCommandExecutionExc("Insufficient funds");
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(
+                    "update account set balance = ? where id = ?;"
+            );
+            ps.setBigDecimal(1, balance);
+            ps.setLong(2, id);
+            ps.execute();
+
+        } catch (SQLException e) {
+            throw new UnsuccessfulCommandExecutionExc(e);
+        }
+
+    }
 
     public AccountModel delete(String name, long userId) {
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
 
             ResultSet rs = findByNameAndUserId(connection, name, userId);
             if (!rs.next()) {
@@ -86,7 +144,7 @@ public class AccountDao {
 
     private ResultSet findByNameAndUserId(Connection connection, String name, long userId) {
         try {
-            PreparedStatement ps =  connection.prepareStatement(
+            PreparedStatement ps = connection.prepareStatement(
                     "select * from account as a where a.name = ? and a.user_id = ?;"
             );
             ps.setString(1, name);
@@ -100,7 +158,7 @@ public class AccountDao {
     }
 
     public List<AccountModel> findByUserId(long userId) {
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
 
             PreparedStatement ps = connection.prepareStatement(
                     "select * from account as a where a.user_id = ? ;",

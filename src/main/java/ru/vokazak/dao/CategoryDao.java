@@ -1,13 +1,13 @@
 package ru.vokazak.dao;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CategoryDao {
@@ -77,7 +77,7 @@ public class CategoryDao {
         }
     }
 
-    public CategoryModel modify(String oldName, String newName) {
+    public CategoryModel update(String oldName, String newName) {
         try (Connection connection = dataSource.getConnection()){
             ResultSet rs = findByName(connection, oldName);
             if (!rs.next()) {
@@ -103,7 +103,32 @@ public class CategoryDao {
         }
     }
 
-    private ResultSet findByName(Connection connection, String name) {
+
+    public List<CategoryModel> selectAll() {
+        try (Connection connection = dataSource.getConnection()){
+            PreparedStatement ps =  connection.prepareStatement(
+                    "select * from category"
+            );
+
+            ResultSet rs =  ps.executeQuery();
+
+            List<CategoryModel> result = new ArrayList<>();
+            while (rs.next()) {
+                CategoryModel categoryModel = new CategoryModel();
+                categoryModel.setName(rs.getString("trans_type"));
+                categoryModel.setId(rs.getLong("id"));
+
+                result.add(categoryModel);
+            }
+
+            return result;
+
+        } catch (SQLException e) {
+            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
+        }
+    }
+
+    private static ResultSet findByName(Connection connection, String name) {
         try {
             PreparedStatement ps =  connection.prepareStatement(
                     "select * from category as a where a.trans_type = ?;"

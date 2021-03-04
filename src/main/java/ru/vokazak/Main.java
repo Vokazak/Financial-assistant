@@ -4,12 +4,12 @@ import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import ru.vokazak.view.RequestHandler;
 
 /*
-Artyom Vasiliev, 12o34p, artvas@gmail.com
-Vladimir Kondratiev, 4r32y1, vladkond@gmail.com
-Anton Vlasov, s89f02, antvlas@gmail.com
-Polina Grigorieva, 8h475L, polgrig@gmail.com
-Nikita Andreev, 6t037i, nikandr@gmail.com
-Inna Vdovina, 9t3b41, invdov@gmail.com
+12o34p, artvas@gmail.com
+4r32y1, vladkond@gmail.com
+s89f02, antvlas@gmail.com
+8h475L, polgrig@gmail.com
+6t037i, nikandr@gmail.com
+9t3b41, invdov@gmail.com
 
 register
 login
@@ -20,9 +20,11 @@ disconnect
 create_trans_type
 del_trans_type
 modify_trans_type
-show_stats_for
+show_stats_for (days)
+create_trans (name, accFrom, accTo, category, money)
 
 login artvas@gmail.com 12o34p
+create_trans TestTransaction AccForSalary AccForEverydayTrans TransferBetweenOwnAccs 3000
 */
 
 public class Main {
