@@ -20,7 +20,7 @@ public class UserDaoTest {
     }
 
     @Test
-    public void findByEmailAndHash() {
+    public void findByEmailAndHash_successful() {
         UserModel userModel = subj.findByEmailAndHash("invdov@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
 
         assertEquals(1L, userModel.getId());
@@ -32,6 +32,7 @@ public class UserDaoTest {
     public void insert_successful() {
         UserModel userModel = subj.insert("Inna", "Vdovina", "invdov2@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
 
+        assertEquals(2, userModel.getId());
         assertEquals("invdov2@gmail.com", userModel.getEmail());
         assertEquals("65fcbb39532c342a6a3c92fa9acf1157", userModel.getPassword());
         assertEquals("Inna", userModel.getName());

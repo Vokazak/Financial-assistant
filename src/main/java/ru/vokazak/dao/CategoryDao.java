@@ -73,7 +73,7 @@ public class CategoryDao {
             return category;
 
         } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
+            throw new UnsuccessfulCommandExecutionExc("Exception while deleting category, since you have transactions with \"" + name + "\" type", e);
         }
     }
 
@@ -99,7 +99,7 @@ public class CategoryDao {
             return category;
 
         } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
+            throw new UnsuccessfulCommandExecutionExc("Exception while updating category", e);
         }
     }
 
@@ -124,7 +124,7 @@ public class CategoryDao {
             return result;
 
         } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
+            throw new UnsuccessfulCommandExecutionExc("Exception while selecting category", e);
         }
     }
 
@@ -184,7 +184,7 @@ public class CategoryDao {
             return resultMap;
 
         } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
+            throw new UnsuccessfulCommandExecutionExc("Exception while summing money", e);
         }
     }
 

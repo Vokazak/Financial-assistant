@@ -1,9 +1,5 @@
-package ru.vokazak.atomicTransaction;
+package ru.vokazak.dao;
 
-import ru.vokazak.dao.AccountDao;
-import ru.vokazak.dao.TransDao;
-import ru.vokazak.dao.TransModel;
-import ru.vokazak.dao.TransToCategoryDao;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import ru.vokazak.service.AccountDTO;
 import ru.vokazak.service.CategoryDTO;
@@ -13,14 +9,14 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class TransRep {
+public class TransCreate {
 
     private final DataSource dataSource;
     private final AccountDao accountDao;
     private final TransDao transDao;
     private final TransToCategoryDao transToCategoryDao;
 
-    public TransRep(DataSource dataSource, AccountDao accountDao, TransDao transDao, TransToCategoryDao transToCategoryDao) {
+    public TransCreate(DataSource dataSource, AccountDao accountDao, TransDao transDao, TransToCategoryDao transToCategoryDao) {
         this.dataSource = dataSource;
         this.accountDao = accountDao;
         this.transDao = transDao;

@@ -11,18 +11,9 @@ import java.util.List;
 public class AccountDao {
 
     private final DataSource dataSource;
-    private Savepoint savepoint;
 
     public AccountDao(DataSource dataSource) {
         this.dataSource = dataSource;
-
-        try {
-            Connection c = dataSource.getConnection();
-            c.setAutoCommit(false);
-            savepoint = c.setSavepoint();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     public AccountModel insert(String name, BigDecimal balance, long userId) {
@@ -56,42 +47,12 @@ public class AccountDao {
                 throw new UnsuccessfulCommandExecutionExc("Can't generate id");
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | UnsuccessfulCommandExecutionExc e) {
             throw new UnsuccessfulCommandExecutionExc(e);
         }
     }
 
     public void update(Connection connection, long id, BigDecimal balance) {
-
-        /*try (Connection connection = dataSource.getConnection()) {
-
-            connection.setAutoCommit(false);
-
-
-            if (balance.compareTo(BigDecimal.ZERO) < 0) {
-                connection.rollback();
-                throw new UnsuccessfulCommandExecutionExc("Insufficient funds");
-            }
-
-            try {
-                PreparedStatement ps = connection.prepareStatement(
-                        "update account set balance = ? where id = ?;"
-                );
-                ps.setBigDecimal(1, balance);
-                ps.setLong(2, id);
-                ps.execute();
-
-                connection.commit();
-            } catch (SQLException e) {
-                connection.rollback(savepoint);
-                throw new UnsuccessfulCommandExecutionExc(e);
-            } finally {
-                connection.setAutoCommit(true);
-            }
-
-        } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc("Exception while updating account", e);
-        }*/
 
         if (balance.compareTo(BigDecimal.ZERO) < 0) {
             throw new UnsuccessfulCommandExecutionExc("Insufficient funds");
@@ -138,7 +99,7 @@ public class AccountDao {
             return acc;
 
         } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
+            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account, since you have transactions from/to \"" + name + "\" account", e);
         }
     }
 

@@ -50,7 +50,7 @@ public class DaoFactory {
     private static TransDao transDao;
     public static TransDao getTransDao() {
         if (transDao == null) {
-            transDao = new TransDao(getDataSource());
+            transDao = new TransDao();
         }
 
         return transDao;
@@ -59,7 +59,7 @@ public class DaoFactory {
     private static TransToCategoryDao transToCategoryDao;
     public static TransToCategoryDao getTransactionToCategoryDao() {
         if (transToCategoryDao == null) {
-            transToCategoryDao = new TransToCategoryDao(getDataSource());
+            transToCategoryDao = new TransToCategoryDao();
         }
 
         return transToCategoryDao;

@@ -11,15 +11,15 @@ s89f02, antvlas@gmail.com
 6t037i, nikandr@gmail.com
 9t3b41, invdov@gmail.com
 
-register
-login
-show_acc_list
-create_acc
-del_acc
-disconnect
-create_trans_type
-del_trans_type
-modify_trans_type
+register (email, password, name, surname)
+login (email, password)
+show_acc_list ()
+create_acc (name, balance)
+del_acc (name)
+disconnect ()
+create_trans_type (name)
+del_trans_type (name)
+modify_trans_type (oldName, newName)
 show_stats_for (days)
 create_trans (name, accFrom, accTo, category, money)
 

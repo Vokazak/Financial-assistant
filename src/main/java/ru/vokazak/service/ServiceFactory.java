@@ -2,7 +2,7 @@ package ru.vokazak.service;
 
 import ru.vokazak.converter.ConverterFactory;
 import ru.vokazak.dao.DaoFactory;
-import ru.vokazak.atomicTransaction.TransRep;
+import ru.vokazak.dao.TransCreate;
 
 public class ServiceFactory {
 
@@ -53,7 +53,7 @@ public class ServiceFactory {
     public static TransService getTransService() {
         if (transService == null) {
             transService = new TransService(
-                   new TransRep(
+                   new TransCreate(
                            DaoFactory.getDataSource(),
                            DaoFactory.getAccountDao(),
                            DaoFactory.getTransDao(),

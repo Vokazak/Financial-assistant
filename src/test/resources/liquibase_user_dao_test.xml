@@ -40,6 +40,122 @@
             <column name="name">Inna</column>
             <column name="surname">Vdovina</column>
         </insert>
+
+    </changeSet>
+
+
+    <changeSet id="accTable" author="vokazak">
+        <createTable tableName="account">
+
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="name" type="varchar(255)">
+                <constraints unique="false" nullable="false" />
+            </column>
+
+            <column name="user_id" type="int">
+                <constraints unique="false" nullable="false" foreignKeyName="fk_user_id" references="sys_user(id)"/>
+            </column>
+
+            <column name="balance" type="numeric">
+                <constraints unique="false" nullable="false" />
+            </column>
+
+        </createTable>
+
+        <insert tableName="account">
+            <column name="name">TestAcc</column>
+            <column name="user_id">1</column>
+            <column name="balance">123.4</column>
+        </insert>
+
+        <insert tableName="account">
+            <column name="name">AnotherTestAcc</column>
+            <column name="user_id">1</column>
+            <column name="balance">123.4</column>
+        </insert>
+
+    </changeSet>
+
+    <changeSet id="categoryTable" author="vokazak">
+        <createTable tableName="category">
+
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="trans_type" type="varchar(255)">
+                <constraints unique="false" nullable="false" />
+            </column>
+
+        </createTable>
+
+        <insert tableName="category">
+            <column name="trans_type">Purchase</column>
+        </insert>
+
+    </changeSet>
+
+    <changeSet id="transactionTable" author="vokazak">
+
+        <createTable tableName="transaction">
+
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true" />
+            </column>
+
+            <column name="trans_date" type="timestamp">
+                <constraints unique="false" nullable="false" />
+            </column>
+
+            <column name="description" type="varchar(255)">
+                <constraints unique="false" nullable="false" />
+            </column>
+
+            <column name="acc_from" type="int">
+                <constraints unique="false" nullable="true" foreignKeyName="fk_acc1_id" references="account(id)"/>
+            </column>
+
+            <column name="acc_to" type="int">
+                <constraints unique="false" nullable="true" foreignKeyName="fk_acc2_id" references="account(id)"/>
+            </column>
+
+            <column name="trans_money" type="numeric">
+                <constraints unique="false" nullable="false" />
+            </column>
+
+        </createTable>
+
+        <insert tableName="transaction">
+            <column name="trans_date">2021-02-04 20:00:04.000000</column>
+            <column name="description">description</column>
+            <column name="acc_from">1</column>
+            <column name="acc_to">2</column>
+            <column name="trans_money">123.4</column>
+        </insert>
+
+    </changeSet>
+
+    <changeSet id="transToCategoryTable" author="vokazak">
+        <createTable tableName="transaction_to_category">
+
+            <column name="transaction_id" type="int">
+                <constraints unique="false" nullable="false" foreignKeyName="fk_trans_id" references="transaction(id)"/>
+            </column>
+
+            <column name="category_id" type="int">
+                <constraints unique="false" nullable="false" foreignKeyName="fk_category_id" references="category(id)"/>
+            </column>
+
+        </createTable>
+
+        <insert tableName="transaction_to_category">
+            <column name="transaction_id">1</column>
+            <column name="category_id">1</column>
+        </insert>
+
     </changeSet>
 
     
