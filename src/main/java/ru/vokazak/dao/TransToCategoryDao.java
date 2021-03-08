@@ -2,7 +2,10 @@ package ru.vokazak.dao;
 
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class TransToCategoryDao {
 

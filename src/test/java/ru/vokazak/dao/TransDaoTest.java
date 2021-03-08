@@ -3,6 +3,7 @@ package ru.vokazak.dao;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -38,10 +39,6 @@ public class TransDaoTest {
         assertEquals(new BigDecimal("123.4"), transModel.getMoney());
     }
 
-    @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
-    public void insert_to_unsuccessful() throws SQLException {
-        TransModel transModel = subj.insertTo(DaoFactory.getDataSource().getConnection(), "description", 4, new BigDecimal("123.4"));
-    }
 
     @Test
     public void insert_from() throws SQLException {

@@ -1,7 +1,6 @@
 package ru.vokazak.service;
 
 import ru.vokazak.converter.Converter;
-import ru.vokazak.converter.UserModelToUserDTOConverter;
 import ru.vokazak.dao.UserDao;
 import ru.vokazak.dao.UserModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;

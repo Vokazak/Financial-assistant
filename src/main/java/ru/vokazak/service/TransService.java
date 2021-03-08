@@ -1,8 +1,8 @@
 package ru.vokazak.service;
 
 import ru.vokazak.converter.Converter;
-import ru.vokazak.dao.*;
 import ru.vokazak.dao.TransCreate;
+import ru.vokazak.dao.TransModel;
 
 import java.math.BigDecimal;
 
