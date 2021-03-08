@@ -28,6 +28,10 @@ public class DaoFactory {
 
         return userDao;
     }
+    public static void resetUserDao() {
+        userDao = null;
+        userDao = getUserDao();
+    }
 
     private static CategoryDao categoryDao;
     public static CategoryDao getCategoryDao() {
@@ -36,6 +40,10 @@ public class DaoFactory {
         }
 
         return categoryDao;
+    }
+    public static void resetCategoryDao() {
+        categoryDao = null;
+        categoryDao = getCategoryDao();
     }
 
     private static AccountDao accountDao;
@@ -46,6 +54,10 @@ public class DaoFactory {
 
         return accountDao;
     }
+    public static void resetAccountDao() {
+        accountDao = null;
+        accountDao = getAccountDao();
+    }
 
     private static TransDao transDao;
     public static TransDao getTransDao() {
@@ -55,6 +67,10 @@ public class DaoFactory {
 
         return transDao;
     }
+    public static void resetTransDao() {
+        transDao = null;
+        transDao = getTransDao();
+    }
 
     private static TransToCategoryDao transToCategoryDao;
     public static TransToCategoryDao getTransactionToCategoryDao() {
@@ -63,6 +79,10 @@ public class DaoFactory {
         }
 
         return transToCategoryDao;
+    }
+    public static void resetTransToCategoryDao() {
+        transToCategoryDao = null;
+        transToCategoryDao = getTransactionToCategoryDao();
     }
 
     private static DataSource dataSource;
@@ -79,6 +99,11 @@ public class DaoFactory {
         }
 
         return dataSource;
+    }
+
+    public static void resetDataSource() {
+        dataSource = null;
+        dataSource = getDataSource();
     }
 
     private static void initDataBase() {

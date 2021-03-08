@@ -1,5 +1,6 @@
 package ru.vokazak.dao;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,6 +18,12 @@ public class TransToCategoryDaoTest {
         System.setProperty("liquibaseFile", "liquibase_user_dao_test.xml");
 
         subj = DaoFactory.getTransactionToCategoryDao();
+    }
+
+    @After
+    public void after() {
+        DaoFactory.resetDataSource();
+        DaoFactory.resetTransToCategoryDao();
     }
 
     @Test

@@ -1,5 +1,6 @@
 package ru.vokazak.dao;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,6 +20,12 @@ public class UserDaoTest {
         subj = DaoFactory.getUserDao();
     }
 
+    @After
+    public void after() {
+        DaoFactory.resetDataSource();
+        DaoFactory.resetUserDao();
+    }
+
     @Test
     public void findByEmailAndHash_successful() {
         UserModel userModel = subj.findByEmailAndHash("invdov@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
@@ -32,7 +39,7 @@ public class UserDaoTest {
     public void insert_successful() {
         UserModel userModel = subj.insert("Inna", "Vdovina", "invdov2@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
 
-        assertEquals(2, userModel.getId());
+        assertEquals(3, userModel.getId());
         assertEquals("invdov2@gmail.com", userModel.getEmail());
         assertEquals("65fcbb39532c342a6a3c92fa9acf1157", userModel.getPassword());
         assertEquals("Inna", userModel.getName());

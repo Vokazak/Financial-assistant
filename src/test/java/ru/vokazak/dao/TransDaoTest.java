@@ -1,5 +1,6 @@
 package ru.vokazak.dao;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,11 +23,17 @@ public class TransDaoTest {
         subj = DaoFactory.getTransDao();
     }
 
+    @After
+    public void after() {
+        DaoFactory.resetDataSource();
+        DaoFactory.resetTransDao();
+    }
+
     @Test
     public void insert_to() throws SQLException {
         TransModel transModel = subj.insertTo(DaoFactory.getDataSource().getConnection(), "description", 1, new BigDecimal("123.4"));
 
-        assertEquals(2, transModel.getId());
+        assertEquals(3, transModel.getId());
         assertEquals("description", transModel.getDescription());
         assertEquals(new BigDecimal("123.4"), transModel.getMoney());
     }
@@ -40,7 +47,7 @@ public class TransDaoTest {
     public void insert_from() throws SQLException {
         TransModel transModel = subj.insertFrom(DaoFactory.getDataSource().getConnection(), "description", 1, new BigDecimal("123.4"));
 
-        assertEquals(2, transModel.getId());
+        assertEquals(4, transModel.getId());
         assertEquals("description", transModel.getDescription());
         assertEquals(new BigDecimal("123.4"), transModel.getMoney());
     }

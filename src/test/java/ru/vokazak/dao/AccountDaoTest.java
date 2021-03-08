@@ -1,5 +1,6 @@
 package ru.vokazak.dao;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,11 +24,17 @@ public class AccountDaoTest {
         subj = DaoFactory.getAccountDao();
     }
 
+    @After
+    public void after() {
+        DaoFactory.resetDataSource();
+        DaoFactory.resetAccountDao();
+    }
+
     @Test
     public void insert_successful() {
         AccountModel accountModel = subj.insert("TestAcc2", new BigDecimal("123.4"), 1);
 
-        assertEquals(3, accountModel.getId());
+        assertEquals(4, accountModel.getId());
         assertEquals(new BigDecimal("123.4"), accountModel.getBalance());
         assertEquals("TestAcc2", accountModel.getName());
         assertEquals(1, accountModel.getUserId());

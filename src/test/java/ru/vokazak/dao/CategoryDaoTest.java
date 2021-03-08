@@ -1,5 +1,6 @@
 package ru.vokazak.dao;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,11 +24,17 @@ public class CategoryDaoTest {
         subj = DaoFactory.getCategoryDao();
     }
 
+    @After
+    public void after() {
+        DaoFactory.resetDataSource();
+        DaoFactory.resetCategoryDao();
+    }
+
     @Test
     public void insert_successful() {
         CategoryModel categoryModel = subj.insert("Salary");
 
-        assertEquals(2, categoryModel.getId());
+        assertEquals(3, categoryModel.getId());
         assertEquals("Salary", categoryModel.getName());
     }
 
