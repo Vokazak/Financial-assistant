@@ -66,15 +66,14 @@ public class CategoryService {
 
     public List<CategoryDTO> getAll() {
         List<CategoryModel> categoryModelList = categoryDao.selectAll();
-        if (categoryModelList == null) {
-            throw new UnsuccessfulCommandExecutionExc("Error in AuthService while listing accounts");
+        if (categoryModelList.isEmpty()) {
+            throw new UnsuccessfulCommandExecutionExc("No categories found in data base");
         }
 
-        List<CategoryDTO> result = new ArrayList<>();
-        categoryModelList.forEach(
-                c -> result.add(converter.convert(c))
-        );
+        return categoryModelList
+                .stream()
+                .map(converter::convert)
+                .collect(Collectors.toList());
 
-        return result;
     }
 }

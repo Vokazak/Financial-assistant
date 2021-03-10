@@ -7,6 +7,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,7 +17,7 @@ public class AccountDaoTest {
 
     @Before
     public void setUp() {
-        System.setProperty("jdbcUrl", "jdbc:h2:mem:test_mem");
+        System.setProperty("jdbcUrl", "jdbc:h2:mem:test_mem" + UUID.randomUUID().toString());
         System.setProperty("jdbcUser", "sa");
         System.setProperty("jdbcPassword", "34127856");
         System.setProperty("liquibaseFile", "liquibase_user_dao_test.xml");
@@ -34,7 +35,7 @@ public class AccountDaoTest {
     public void insert_successful() {
         AccountModel accountModel = subj.insert("TestAcc2", new BigDecimal("123.4"), 1);
 
-        assertEquals(4, accountModel.getId());
+        assertEquals(3, accountModel.getId());
         assertEquals(new BigDecimal("123.4"), accountModel.getBalance());
         assertEquals("TestAcc2", accountModel.getName());
         assertEquals(1, accountModel.getUserId());

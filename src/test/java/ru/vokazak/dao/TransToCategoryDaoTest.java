@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class TransToCategoryDaoTest {
 
@@ -12,7 +13,7 @@ public class TransToCategoryDaoTest {
 
     @Before
     public void setUp() {
-        System.setProperty("jdbcUrl", "jdbc:h2:mem:test_mem");
+        System.setProperty("jdbcUrl", "jdbc:h2:mem:test_mem" + UUID.randomUUID().toString());
         System.setProperty("jdbcUser", "sa");
         System.setProperty("jdbcPassword", "34127856");
         System.setProperty("liquibaseFile", "liquibase_user_dao_test.xml");

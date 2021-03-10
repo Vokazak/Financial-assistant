@@ -4,6 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.junit.Assert.*;
 
 public class UserDaoTest {
@@ -12,7 +14,7 @@ public class UserDaoTest {
 
     @Before
     public void setUp() {
-        System.setProperty("jdbcUrl", "jdbc:h2:mem:test_mem");
+        System.setProperty("jdbcUrl", "jdbc:h2:mem:test_mem" + UUID.randomUUID().toString());
         System.setProperty("jdbcUser", "sa");
         System.setProperty("jdbcPassword", "34127856");
         System.setProperty("liquibaseFile", "liquibase_user_dao_test.xml");
@@ -39,7 +41,7 @@ public class UserDaoTest {
     public void insert_successful() {
         UserModel userModel = subj.insert("Inna", "Vdovina", "invdov2@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
 
-        assertEquals(3, userModel.getId());
+        assertEquals(2, userModel.getId());
         assertEquals("invdov2@gmail.com", userModel.getEmail());
         assertEquals("65fcbb39532c342a6a3c92fa9acf1157", userModel.getPassword());
         assertEquals("Inna", userModel.getName());
