@@ -1,50 +1,70 @@
 package ru.vokazak.service;
 
-import ru.vokazak.converter.AccModelToAccDTOConverter;
-import ru.vokazak.converter.CategoryModelToCategoryDTOConverter;
-import ru.vokazak.converter.UserModelToUserDTOConverter;
-import ru.vokazak.dao.AccountDao;
-import ru.vokazak.dao.CategoryDao;
-import ru.vokazak.dao.UserDao;
+import ru.vokazak.converter.ConverterFactory;
+import ru.vokazak.dao.DaoFactory;
+import ru.vokazak.dao.TransCreate;
 
 public class ServiceFactory {
 
     private static AuthService authService;
-
     public static AuthService getAuthService() {
         if (authService == null) {
             authService = new AuthService(
-                    new UserDao(),
-                    new Md5DigestService(),
-                    new UserModelToUserDTOConverter()
+                    DaoFactory.getUserDao(),
+                    getDigestService(),
+                    ConverterFactory.getUserModelUserDTOConverter()
             );
         }
         return authService;
     }
 
     private static AccService accService;
-
     public static AccService getAccService() {
         if (accService == null) {
             accService = new AccService(
-                    new AccountDao(),
-                    new AccModelToAccDTOConverter()
+                    DaoFactory.getAccountDao(),
+                    ConverterFactory.getAccountModelAccountDTOConverter()
             );
         }
         return accService;
     }
 
     private static CategoryService categoryService;
-
     public static CategoryService getCategoryService() {
         if (categoryService == null) {
             categoryService = new CategoryService(
-                    new CategoryDao(),
-                    new CategoryModelToCategoryDTOConverter()
+                    DaoFactory.getCategoryDao(),
+                    ConverterFactory.getCategoryModelCategoryDTOConverter()
             );
         }
         return categoryService;
     }
 
-    private ServiceFactory() {}
+    private static DigestService digestService;
+    public static DigestService getDigestService() {
+        if (digestService == null) {
+            digestService = new Md5DigestService();
+        }
+
+        return digestService;
+    }
+
+    private static TransService transService;
+    public static TransService getTransService() {
+        if (transService == null) {
+            transService = new TransService(
+                   new TransCreate(
+                           DaoFactory.getDataSource(),
+                           DaoFactory.getAccountDao(),
+                           DaoFactory.getTransDao(),
+                           DaoFactory.getTransactionToCategoryDao()
+                   ),
+                    ConverterFactory.getTransModelTransDTOConverter()
+            );
+
+        }
+
+        return transService;
+    }
+
 }

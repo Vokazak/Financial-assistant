@@ -14,5 +14,7 @@ public enum OperationType {
     DELETE_TRANS_TYPE,
     MODIFY_TRANS_TYPE,
 
+    CREATE_TRANS,
+
     DISCONNECT
 }

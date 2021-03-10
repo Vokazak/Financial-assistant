@@ -1,6 +1,6 @@
 package ru.vokazak.service;
 
-import ru.vokazak.converter.UserModelToUserDTOConverter;
+import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.UserDao;
 import ru.vokazak.dao.UserModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
@@ -9,9 +9,9 @@ public class AuthService {
 
     private final UserDao userDao;
     private final DigestService digestService;
-    private final UserModelToUserDTOConverter userDTOConverter;
+    private final Converter<UserModel, UserDTO> userDTOConverter;
 
-    public AuthService(UserDao userDao, DigestService digestService, UserModelToUserDTOConverter userDTOConverter) {
+    public AuthService(UserDao userDao, DigestService digestService, Converter<UserModel, UserDTO> userDTOConverter) {
         this.userDao = userDao;
         this.digestService = digestService;
         this.userDTOConverter = userDTOConverter;

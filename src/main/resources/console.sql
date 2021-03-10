@@ -77,7 +77,7 @@ select
     u.name,
     a.name
 from sys_user as u
-    left join account as a on u.id = a.user_id
+         left join account as a on u.id = a.user_id
 where u.name = 'Artyom';
 
 select
@@ -86,10 +86,10 @@ select
     t.trans_money,
     a.name
 from sys_user as u
-    left join account as a on u.id = a.user_id
-    left join transaction as t on a.id = t.acc_from or a.id = t.acc_to
+         left join account as a on u.id = a.user_id
+         left join transaction as t on a.id = t.acc_from or a.id = t.acc_to
 where u.name = 'Artyom'
-    and t.trans_date between '2021-02-13 00:00:00'::timestamp and '2021-02-14 00:00:00'::timestamp;
+  and t.trans_date between '2021-02-13 00:00:00'::timestamp and '2021-02-14 00:00:00'::timestamp;
 
 select
     u.name,
@@ -97,3 +97,18 @@ select
 from sys_user as u
          left join account as a on u.id = a.user_id
 group by u.name;
+
+update sys_user set password = md5(password);
+
+select
+    c.id,
+    c.trans_type,
+    sum(trans_money)
+from sys_user as u
+    left join account as a on u.id = a.user_id
+    left join transaction as t on a.id = t.acc_from or a.id = t.acc_to
+    left join transaction_to_category ttc on t.id = ttc.transaction_id
+    left join category c on ttc.category_id = c.id
+where u.id = 1
+    and t.trans_date between (CURRENT_TIMESTAMP - make_interval(days := 60)) and CURRENT_TIMESTAMP
+group by c.trans_type, c.id;

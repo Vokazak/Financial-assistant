@@ -3,7 +3,7 @@ package ru.vokazak.commandAnalyzer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-enum Lexemes {
+public enum Lexemes {
 
     CMD_REGISTER("register"),
     CMD_LOGIN("login"),
@@ -17,6 +17,7 @@ enum Lexemes {
     CMD_DELETE_TRANS_TYPE("del_trans_type"),
     CMD_MODIFY_TRANS_TYPE("modify_trans_type"),
 
+    CMD_CREATE_TRANSACTION("create_trans"),
     CMD_DISCONNECT("disconnect"),
 
     ARG_EMAIL("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+" +
@@ -33,7 +34,9 @@ enum Lexemes {
 
     ARG_NAME("[A-Z]{1}[a-z]{1,30}"), //person's name or surname
     ARG_NUM("\\d*\\.?\\d+"), //account balance
-    ARG_STRING("[A-Za-z0-9]{1,30}"); //Password or account name
+    ARG_STRING("[A-Za-z0-9]{1,30}"), //Password or account name
+
+    NULL(""); //when arg field must be empty
 
     private final Pattern pattern;
 

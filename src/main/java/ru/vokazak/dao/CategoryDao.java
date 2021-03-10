@@ -1,30 +1,21 @@
 package ru.vokazak.dao;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CategoryDao {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USER = "postgres";
-    private static final String PASS = "34127856";
-
     private final DataSource dataSource;
 
-    public CategoryDao() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(URL);
-        config.setUsername(USER);
-        config.setPassword(PASS);
-
-        dataSource = new HikariDataSource(config);
+    public CategoryDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public CategoryModel insert(String name) {
@@ -82,11 +73,11 @@ public class CategoryDao {
             return category;
 
         } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
+            throw new UnsuccessfulCommandExecutionExc("Exception while deleting category, since you have transactions with \"" + name + "\" type", e);
         }
     }
 
-    public CategoryModel modify(String oldName, String newName) {
+    public CategoryModel update(String oldName, String newName) {
         try (Connection connection = dataSource.getConnection()){
             ResultSet rs = findByName(connection, oldName);
             if (!rs.next()) {
@@ -108,11 +99,36 @@ public class CategoryDao {
             return category;
 
         } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
+            throw new UnsuccessfulCommandExecutionExc("Exception while updating category", e);
         }
     }
 
-    private ResultSet findByName(Connection connection, String name) {
+
+    public List<CategoryModel> selectAll() {
+        try (Connection connection = dataSource.getConnection()){
+            PreparedStatement ps =  connection.prepareStatement(
+                    "select * from category"
+            );
+
+            ResultSet rs =  ps.executeQuery();
+
+            List<CategoryModel> result = new ArrayList<>();
+            while (rs.next()) {
+                CategoryModel categoryModel = new CategoryModel();
+                categoryModel.setName(rs.getString("trans_type"));
+                categoryModel.setId(rs.getLong("id"));
+
+                result.add(categoryModel);
+            }
+
+            return result;
+
+        } catch (SQLException e) {
+            throw new UnsuccessfulCommandExecutionExc("Exception while selecting category", e);
+        }
+    }
+
+    private static ResultSet findByName(Connection connection, String name) {
         try {
             PreparedStatement ps =  connection.prepareStatement(
                     "select * from category as a where a.trans_type = ?;"
@@ -168,7 +184,7 @@ public class CategoryDao {
             return resultMap;
 
         } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
+            throw new UnsuccessfulCommandExecutionExc("Exception while summing money", e);
         }
     }
 

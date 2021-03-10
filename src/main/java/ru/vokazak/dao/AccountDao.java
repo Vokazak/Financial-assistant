@@ -1,7 +1,5 @@
 package ru.vokazak.dao;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import javax.sql.DataSource;
@@ -12,19 +10,10 @@ import java.util.List;
 
 public class AccountDao {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USER = "postgres";
-    private static final String PASS = "34127856";
-
     private final DataSource dataSource;
 
-    public AccountDao() {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(URL);
-        config.setUsername(USER);
-        config.setPassword(PASS);
-
-        dataSource = new HikariDataSource(config);
+    public AccountDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     public AccountModel insert(String name, BigDecimal balance, long userId) {
@@ -58,14 +47,33 @@ public class AccountDao {
                 throw new UnsuccessfulCommandExecutionExc("Can't generate id");
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | UnsuccessfulCommandExecutionExc e) {
             throw new UnsuccessfulCommandExecutionExc(e);
         }
     }
 
+    public void update(Connection connection, long id, BigDecimal balance) {
+
+        if (balance.compareTo(BigDecimal.ZERO) < 0) {
+            throw new UnsuccessfulCommandExecutionExc("Insufficient funds");
+        }
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(
+                    "update account set balance = ? where id = ?;"
+            );
+            ps.setBigDecimal(1, balance);
+            ps.setLong(2, id);
+            ps.execute();
+
+        } catch (SQLException e) {
+            throw new UnsuccessfulCommandExecutionExc(e);
+        }
+
+    }
 
     public AccountModel delete(String name, long userId) {
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
 
             ResultSet rs = findByNameAndUserId(connection, name, userId);
             if (!rs.next()) {
@@ -91,13 +99,13 @@ public class AccountDao {
             return acc;
 
         } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account", e);
+            throw new UnsuccessfulCommandExecutionExc("Exception while deleting account, since you have transactions from/to \"" + name + "\" account", e);
         }
     }
 
     private ResultSet findByNameAndUserId(Connection connection, String name, long userId) {
         try {
-            PreparedStatement ps =  connection.prepareStatement(
+            PreparedStatement ps = connection.prepareStatement(
                     "select * from account as a where a.name = ? and a.user_id = ?;"
             );
             ps.setString(1, name);
@@ -111,7 +119,7 @@ public class AccountDao {
     }
 
     public List<AccountModel> findByUserId(long userId) {
-        try (Connection connection = dataSource.getConnection()){
+        try (Connection connection = dataSource.getConnection()) {
 
             PreparedStatement ps = connection.prepareStatement(
                     "select * from account as a where a.user_id = ? ;",
