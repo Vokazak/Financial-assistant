@@ -1,6 +1,5 @@
 package ru.vokazak.dao;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,13 +21,7 @@ public class AccountDaoTest {
         System.setProperty("jdbcPassword", "34127856");
         System.setProperty("liquibaseFile", "liquibase_user_dao_test.xml");
 
-        subj = DaoFactory.getAccountDao();
-    }
-
-    @After
-    public void after() {
-        DaoFactory.resetDataSource();
-        DaoFactory.resetAccountDao();
+        subj = DaoConfiguration.getAccountDao();
     }
 
     @Test
@@ -48,12 +41,12 @@ public class AccountDaoTest {
 
     @Test
     public void update_successful() throws SQLException {
-        subj.update(DaoFactory.getDataSource().getConnection(), 1, new BigDecimal("432.1"));
+        subj.update(DaoConfiguration.getDataSource().getConnection(), 1, new BigDecimal("432.1"));
     }
 
     @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
     public void update_unsuccessful() throws SQLException {
-        subj.update(DaoFactory.getDataSource().getConnection(), 1, new BigDecimal("-432.1"));
+        subj.update(DaoConfiguration.getDataSource().getConnection(), 1, new BigDecimal("-432.1"));
     }
 
     @Test

@@ -1,5 +1,6 @@
 package ru.vokazak.dao;
 
+import org.springframework.stereotype.Service;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.sql.Connection;
@@ -7,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+@Service
 public class TransToCategoryDao {
 
     public void insert(Connection connection, long transactionId, long categoryId) {

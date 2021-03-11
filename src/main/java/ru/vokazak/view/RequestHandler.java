@@ -1,5 +1,7 @@
 package ru.vokazak.view;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.vokazak.commandAnalyzer.*;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import ru.vokazak.service.*;
@@ -28,10 +30,12 @@ public class RequestHandler {
         lexer = new Lexer();
         parser = new Parser();
 
-        authService = ServiceFactory.getAuthService();
-        accService = ServiceFactory.getAccService();
-        categoryService = ServiceFactory.getCategoryService();
-        transService = ServiceFactory.getTransService();
+        ApplicationContext context = new AnnotationConfigApplicationContext("ru.vokazak");
+
+        authService = context.getBean(AuthService.class);
+        accService = context.getBean(AccService.class);
+        categoryService = context.getBean(CategoryService.class);
+        transService = context.getBean(TransService.class);
     }
 
     public boolean processNewRequest() throws UnsuccessfulCommandExecutionExc {

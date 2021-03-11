@@ -1,6 +1,5 @@
 package ru.vokazak.dao;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,13 +21,7 @@ public class CategoryDaoTest {
         System.setProperty("jdbcPassword", "34127856");
         System.setProperty("liquibaseFile", "liquibase_user_dao_test.xml");
 
-        subj = DaoFactory.getCategoryDao();
-    }
-
-    @After
-    public void after() {
-        DaoFactory.resetDataSource();
-        DaoFactory.resetCategoryDao();
+        subj = DaoConfiguration.getCategoryDao();
     }
 
     @Test

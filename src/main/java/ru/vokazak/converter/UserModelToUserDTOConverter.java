@@ -1,8 +1,10 @@
 package ru.vokazak.converter;
 
+import org.springframework.stereotype.Service;
 import ru.vokazak.dao.UserModel;
 import ru.vokazak.service.UserDTO;
 
+@Service
 public class UserModelToUserDTOConverter implements Converter<UserModel, UserDTO> {
     @Override
     public UserDTO convert(UserModel source) {

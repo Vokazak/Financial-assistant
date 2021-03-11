@@ -1,10 +1,12 @@
 package ru.vokazak.dao;
 
+import org.springframework.stereotype.Service;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.math.BigDecimal;
 import java.sql.*;
 
+@Service
 public class TransDao {
 
     public TransDao() {

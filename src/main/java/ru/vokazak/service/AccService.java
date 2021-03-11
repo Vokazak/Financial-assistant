@@ -1,5 +1,6 @@
 package ru.vokazak.service;
 
+import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.AccountDao;
 import ru.vokazak.dao.AccountModel;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class AccService {
 
     private final AccountDao accountDao;

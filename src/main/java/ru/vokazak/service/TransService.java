@@ -1,11 +1,13 @@
 package ru.vokazak.service;
 
+import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.TransCreate;
 import ru.vokazak.dao.TransModel;
 
 import java.math.BigDecimal;
 
+@Service
 public class TransService {
 
     private final Converter<TransModel, TransDTO> converter;

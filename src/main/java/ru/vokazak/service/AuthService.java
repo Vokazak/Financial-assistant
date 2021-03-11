@@ -1,10 +1,12 @@
 package ru.vokazak.service;
 
+import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.UserDao;
 import ru.vokazak.dao.UserModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
+@Service
 public class AuthService {
 
     private final UserDao userDao;

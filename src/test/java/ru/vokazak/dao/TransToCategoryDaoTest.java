@@ -1,6 +1,5 @@
 package ru.vokazak.dao;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,28 +17,22 @@ public class TransToCategoryDaoTest {
         System.setProperty("jdbcPassword", "34127856");
         System.setProperty("liquibaseFile", "liquibase_user_dao_test.xml");
 
-        subj = DaoFactory.getTransactionToCategoryDao();
-    }
-
-    @After
-    public void after() {
-        DaoFactory.resetDataSource();
-        DaoFactory.resetTransToCategoryDao();
+        subj = DaoConfiguration.getTransactionToCategoryDao();
     }
 
     @Test
     public void insert_successful() throws SQLException {
-        subj.insert(DaoFactory.getDataSource().getConnection(), 1, 1);
+        subj.insert(DaoConfiguration.getDataSource().getConnection(), 1, 1);
     }
 
     @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
     public void insert_unsuccessful() throws SQLException {
-        subj.insert(DaoFactory.getDataSource().getConnection(), 2, 2);
+        subj.insert(DaoConfiguration.getDataSource().getConnection(), 2, 2);
     }
 
     @Test
     public void delete() throws SQLException {
-        subj.delete(DaoFactory.getDataSource().getConnection(), 1);
+        subj.delete(DaoConfiguration.getDataSource().getConnection(), 1);
     }
 
 }
