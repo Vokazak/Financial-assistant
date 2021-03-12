@@ -24,32 +24,7 @@ public class DaoConfiguration {
     private static final String PASS = "34127856";
 
     @Bean
-    public static UserDao getUserDao() {
-        return new UserDao(getDataSource());
-    }
-
-    @Bean
-    public static CategoryDao getCategoryDao() {
-        return new CategoryDao(getDataSource());
-    }
-
-    @Bean
-    public static AccountDao getAccountDao() {
-        return new AccountDao(getDataSource());
-    }
-
-    @Bean
-    public static TransDao getTransDao() {
-        return new TransDao();
-    }
-
-    @Bean
-    public static TransToCategoryDao getTransactionToCategoryDao() {
-        return new TransToCategoryDao();
-    }
-
-    @Bean
-    public static DataSource getDataSource() {
+    public DataSource getDataSource() {
         HikariConfig config = new HikariConfig();
         config.setJdbcUrl(System.getProperty("jdbcUrl", URL)); //URL - defaultParameter
         config.setUsername(System.getProperty("jdbcUser", USER));
@@ -60,7 +35,7 @@ public class DaoConfiguration {
         return dataSource;
     }
 
-    private static void initDataBase(DataSource dataSource) {
+    private void initDataBase(DataSource dataSource) {
         try {
             DatabaseConnection connection = new JdbcConnection(dataSource.getConnection());
             Database database = DatabaseFactory.getInstance().findCorrectDatabaseImplementation(connection);

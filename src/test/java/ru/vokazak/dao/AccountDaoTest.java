@@ -2,7 +2,10 @@ package ru.vokazak.dao;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
@@ -13,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 public class AccountDaoTest {
 
     AccountDao subj;
+    ApplicationContext context;
 
     @Before
     public void setUp() {
@@ -21,7 +25,8 @@ public class AccountDaoTest {
         System.setProperty("jdbcPassword", "34127856");
         System.setProperty("liquibaseFile", "liquibase_user_dao_test.xml");
 
-        subj = DaoConfiguration.getAccountDao();
+        context = new AnnotationConfigApplicationContext("ru.vokazak");
+        subj = context.getBean(AccountDao.class);
     }
 
     @Test
@@ -41,12 +46,12 @@ public class AccountDaoTest {
 
     @Test
     public void update_successful() throws SQLException {
-        subj.update(DaoConfiguration.getDataSource().getConnection(), 1, new BigDecimal("432.1"));
+        subj.update(context.getBean(DataSource.class).getConnection(), 1, new BigDecimal("432.1"));
     }
 
     @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
     public void update_unsuccessful() throws SQLException {
-        subj.update(DaoConfiguration.getDataSource().getConnection(), 1, new BigDecimal("-432.1"));
+        subj.update(context.getBean(DataSource.class).getConnection(), 1, new BigDecimal("-432.1"));
     }
 
     @Test

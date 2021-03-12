@@ -2,6 +2,7 @@ package ru.vokazak.dao;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class UserDaoTest {
         System.setProperty("jdbcPassword", "34127856");
         System.setProperty("liquibaseFile", "liquibase_user_dao_test.xml");
 
-        subj = DaoConfiguration.getUserDao();
+        subj = new AnnotationConfigApplicationContext("ru.vokazak").getBean(UserDao.class);
     }
 
     @Test
