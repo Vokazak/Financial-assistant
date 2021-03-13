@@ -1,16 +1,17 @@
 package ru.vokazak.service;
 
+import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.CategoryDao;
 import ru.vokazak.dao.CategoryModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Service
 public class CategoryService {
 
     private final CategoryDao categoryDao;

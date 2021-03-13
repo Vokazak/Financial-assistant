@@ -1,5 +1,7 @@
 package ru.vokazak.dao;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import ru.vokazak.service.AccountDTO;
 import ru.vokazak.service.CategoryDTO;
@@ -9,6 +11,7 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+@Service
 public class TransCreate {
 
     private final DataSource dataSource;

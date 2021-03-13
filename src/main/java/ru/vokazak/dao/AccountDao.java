@@ -1,5 +1,6 @@
 package ru.vokazak.dao;
 
+import org.springframework.stereotype.Service;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import javax.sql.DataSource;
@@ -8,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class AccountDao {
 
     private final DataSource dataSource;

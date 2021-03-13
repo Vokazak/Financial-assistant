@@ -1,5 +1,6 @@
 package ru.vokazak.dao;
 
+import org.springframework.stereotype.Service;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import javax.sql.DataSource;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class CategoryDao {
 
     private final DataSource dataSource;

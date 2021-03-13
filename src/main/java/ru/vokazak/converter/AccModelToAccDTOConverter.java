@@ -1,8 +1,10 @@
 package ru.vokazak.converter;
 
+import org.springframework.stereotype.Service;
 import ru.vokazak.dao.AccountModel;
 import ru.vokazak.service.AccountDTO;
 
+@Service
 public class AccModelToAccDTOConverter implements Converter<AccountModel, AccountDTO> {
 
     @Override
