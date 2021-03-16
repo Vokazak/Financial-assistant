@@ -149,4 +149,35 @@ public class AccountDao {
             throw new UnsuccessfulCommandExecutionExc("Exception while listing accs", e);
         }
     }
+
+    public AccountModel update(String name, BigDecimal balance, long userId) {
+        try (Connection connection = dataSource.getConnection()){
+
+            ResultSet rs = findByNameAndUserId(connection, name, userId);
+            if (!rs.next()) {
+                throw new UnsuccessfulCommandExecutionExc("Category with this name does not exist");
+            }
+            long id = rs.getLong("id");
+            BigDecimal oldBalance = rs.getBigDecimal("balance");
+
+            PreparedStatement ps = connection.prepareStatement(
+                    "update account set balance = ? where name = ? and user_id = ?;"
+            );
+            ps.setBigDecimal(1, balance);
+            ps.setString(2, name);
+            ps.setLong(3, userId);
+
+            ps.execute();
+
+            AccountModel accountModel = new AccountModel();
+            accountModel.setUserId(userId);
+            accountModel.setBalance(oldBalance);
+            accountModel.setName(name);
+            accountModel.setId(id);
+            return accountModel;
+
+        } catch (SQLException e) {
+            throw new UnsuccessfulCommandExecutionExc("Exception while updating category", e);
+        }
+    }
 }

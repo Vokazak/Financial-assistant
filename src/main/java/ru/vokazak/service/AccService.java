@@ -41,6 +41,16 @@ public class AccService {
         return accDTOConverter.convert(accToDelete);
     }
 
+    public AccountDTO modify(String name, BigDecimal balance, long userId) {
+
+        AccountModel accToModify = accountDao.update(name, balance, userId);
+        if (accToModify == null) {
+            throw new UnsuccessfulCommandExecutionExc("Error while deleting account");
+        }
+
+        return accDTOConverter.convert(accToModify);
+    }
+
     public List<AccountDTO> getAccList(long userId) {
 
         List<AccountModel> accountModelList = accountDao.findByUserId(userId);

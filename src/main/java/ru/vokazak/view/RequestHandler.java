@@ -2,6 +2,7 @@ package ru.vokazak.view;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.vokazak.SpringContext;
 import ru.vokazak.commandAnalyzer.*;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import ru.vokazak.service.*;
@@ -113,22 +114,16 @@ public class RequestHandler {
                     String accFromName = tokens.get(2).value();
                     String accToName = tokens.get(3).value();
 
-                    //if accFrom == NULL && accTo == NULL
-                    if (accFromName.equals(Lexemes.NULL.name()) && accToName.equals(Lexemes.NULL.name())) {
-                        throw new UnsuccessfulCommandExecutionExc("No accounts are attached to transaction");
-                    }
-
-                    if (accFromName.equals(accToName)) {
-                        throw new UnsuccessfulCommandExecutionExc("Transaction has no reason");
-                    }
+                    checkAccNamesForTransaction(accFromName, accToName);
 
                     AccountDTO accFrom = getAccount(currentUser.getId(), accFromName);
                     AccountDTO accTo = getAccount(currentUser.getId(), accToName);
                     CategoryDTO category = getCategory(tokens.get(4).value());
+                    BigDecimal balance = parseBalance(tokens.get(5).value());
 
                     //name, accFrom, accTo, category, description, money
                     TransDTO transaction = transService.createTransaction(
-                            tokens.get(1).value(), accFrom, accTo, category, new BigDecimal(tokens.get(5).value()));
+                            tokens.get(1).value(), accFrom, accTo, category, balance);
                     System.out.println("Transaction " + transaction.getId() + " was successfully created");
                     System.out.println("\t" + transaction);
                     return true;
@@ -149,8 +144,8 @@ public class RequestHandler {
         }
     }
 
-    private CategoryDTO getCategory(String name) {
-        List<CategoryDTO> categories = categoryService.getAll();
+    public static CategoryDTO getCategory(String name) {
+        List<CategoryDTO> categories = SpringContext.getContext().getBean(CategoryService.class).getAll();
         for (CategoryDTO c: categories) {
             if (c.getName().equals(name)) {
                 return c;
@@ -160,20 +155,39 @@ public class RequestHandler {
         throw new UnsuccessfulCommandExecutionExc("Category \"" + name + "\" does not exist");
     }
 
-    private AccountDTO getAccount(long userId, String name) {
+    public static AccountDTO getAccount(long userId, String name) {
         if (name.equals(Lexemes.NULL.name())) {
             return null;
         }
 
-        List<AccountDTO> accounts = accService.getAccList(userId);
+        List<AccountDTO> accounts = SpringContext.getContext().getBean(AccService.class).getAccList(userId);
         for (AccountDTO a: accounts) {
             if (a.getName().equals(name)) {
                 return a;
             }
         }
 
-        throw new UnsuccessfulCommandExecutionExc(currentUser.getName() + "'s account \"" + name + "\" does not exist");
+        throw new UnsuccessfulCommandExecutionExc("Account with name \"" + name + "\" does not exist");
 
+    }
+
+    public static void checkAccNamesForTransaction(String accFromName, String accToName) {
+        //if accFrom == NULL && accTo == NULL
+        if (accFromName.equals(Lexemes.NULL.name()) && accToName.equals(Lexemes.NULL.name())) {
+            throw new UnsuccessfulCommandExecutionExc("No accounts are attached to transaction");
+        }
+
+        if (accFromName.equals(accToName)) {
+            throw new UnsuccessfulCommandExecutionExc("Transaction has no reason");
+        }
+    }
+
+    public static BigDecimal parseBalance(String money) throws UnsuccessfulCommandExecutionExc {
+        try {
+            return new BigDecimal(money);
+        } catch (NumberFormatException e) {
+            throw new UnsuccessfulCommandExecutionExc("Invalid parameter", e);
+        }
     }
 
 }
