@@ -11,7 +11,7 @@ public class SpringContext {
             try {
                 Class.forName("org.postgresql.Driver");
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                throw new RuntimeException("org.postgresql.Driver's class was not found", e);
             }
             context = new AnnotationConfigApplicationContext("ru.vokazak");
         }
