@@ -78,7 +78,7 @@ public class AccountDao {
         try {
             update(dataSource.getConnection(), id, balance);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new UnsuccessfulCommandExecutionExc(e);
         }
 
     }
