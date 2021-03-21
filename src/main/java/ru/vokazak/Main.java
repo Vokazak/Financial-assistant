@@ -11,18 +11,29 @@ s89f02, antvlas@gmail.com
 6t037i, nikandr@gmail.com
 9t3b41, invdov@gmail.com
 
+Authorization commands:
 register (email, password, name, surname)
 login (email, password)
+
+Account commands:
 show_acc_list ()
 create_acc (name, balance)
 del_acc (name)
-disconnect ()
+
+Category commands:
 create_trans_type (name)
 del_trans_type (name)
 modify_trans_type (oldName, newName)
-show_stats_for (days)
+
+Transaction commands:
 create_trans (name, accFrom, accTo, category, money)
 
+Reports:
+show_stats_for (days)
+
+disconnect ()
+
+Example:
 login artvas@gmail.com 12o34p
 create_trans TestTransaction AccForSalary AccForEverydayTrans TransferBetweenOwnAccs 3000
 */

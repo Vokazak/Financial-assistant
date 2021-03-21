@@ -19,6 +19,16 @@ public class AuthService {
         this.userDTOConverter = userDTOConverter;
     }
 
+    public UserDTO getUserById(long userId) {
+        UserModel userModel = userDao.findById(userId);
+
+        if (userModel == null) {
+            throw new UnsuccessfulCommandExecutionExc("User with id=" + userId + " was not found");
+        }
+
+        return userDTOConverter.convert(userModel);
+    }
+
     public UserDTO auth(String email, String password) {
         String hash = digestService.hex(password);
 

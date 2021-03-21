@@ -74,6 +74,15 @@ public class AccountDao {
 
     }
 
+    public void update(long id, BigDecimal balance) {
+        try {
+            update(dataSource.getConnection(), id, balance);
+        } catch (SQLException e) {
+            throw new UnsuccessfulCommandExecutionExc(e);
+        }
+
+    }
+
     public AccountModel delete(String name, long userId) {
         try (Connection connection = dataSource.getConnection()) {
 

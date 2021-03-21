@@ -5,6 +5,7 @@ import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.AccountDao;
 import ru.vokazak.dao.AccountModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
+import ru.vokazak.view.RequestHandler;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -39,6 +40,18 @@ public class AccService {
         }
 
         return accDTOConverter.convert(accToDelete);
+    }
+
+    public AccountDTO modify(String name, BigDecimal balance, long userId) {
+
+        AccountDTO accToModify = RequestHandler.getAccount(userId, name);
+        if (accToModify == null) {
+            throw new UnsuccessfulCommandExecutionExc("Error while deleting account");
+        }
+
+        accountDao.update(accToModify.getId(), balance);
+
+        return accToModify;
     }
 
     public List<AccountDTO> getAccList(long userId) {

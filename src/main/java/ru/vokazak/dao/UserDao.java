@@ -15,6 +15,27 @@ public class UserDao {
         this.dataSource = dataSource;
     }
 
+    public UserModel findById(long id) {
+        UserModel userModel = null;
+
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement ps = connection.prepareStatement(
+                    "select * from sys_user where id = ?"
+            );
+            ps.setLong(1, id);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                userModel = createUserModelByResultSet(rs);
+            }
+
+        } catch (SQLException e) {
+            throw new UnsuccessfulCommandExecutionExc(e);
+        }
+
+        return userModel;
+    }
+
     public UserModel findByEmailAndHash(String email, String hash) {
 
         UserModel userModel = null;
@@ -27,13 +48,8 @@ public class UserDao {
             ps.setString(2, hash);
 
             ResultSet rs = ps.executeQuery();
-
             if (rs.next()) {
-                userModel = new UserModel();
-                userModel.setId(rs.getLong("id"));
-                userModel.setEmail(rs.getString("email"));
-                userModel.setPassword(rs.getString("password"));
-                userModel.setName(rs.getString("name"));
+                userModel = createUserModelByResultSet(rs);
             }
 
         } catch (SQLException e) {
@@ -78,6 +94,16 @@ public class UserDao {
             throw new UnsuccessfulCommandExecutionExc(e);
         }
 
+    }
+
+    private UserModel createUserModelByResultSet(ResultSet rs) throws SQLException {
+        UserModel userModel = new UserModel();
+        userModel.setId(rs.getLong("id"));
+        userModel.setEmail(rs.getString("email"));
+        userModel.setPassword(rs.getString("password"));
+        userModel.setName(rs.getString("name"));
+
+        return userModel;
     }
 
 }
