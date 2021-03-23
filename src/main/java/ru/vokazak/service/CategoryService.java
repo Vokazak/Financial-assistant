@@ -1,5 +1,6 @@
 package ru.vokazak.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.CategoryDao;
@@ -12,15 +13,11 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryDao categoryDao;
     private final Converter<CategoryModel, CategoryDTO> converter;
-
-    public CategoryService(CategoryDao categoryDao, Converter<CategoryModel, CategoryDTO> converter) {
-        this.categoryDao = categoryDao;
-        this.converter = converter;
-    }
 
     public CategoryDTO create(String name) {
 

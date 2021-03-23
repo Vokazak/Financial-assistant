@@ -1,5 +1,6 @@
 package ru.vokazak.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.AccountDao;
@@ -12,15 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AccService {
 
     private final AccountDao accountDao;
     private final Converter<AccountModel, AccountDTO> accDTOConverter;
-
-    public AccService(AccountDao accountDao, Converter<AccountModel, AccountDTO> accDTOConverter) {
-        this.accountDao = accountDao;
-        this.accDTOConverter = accDTOConverter;
-    }
 
     public AccountDTO create(String name, BigDecimal balance, long userId) {
 
