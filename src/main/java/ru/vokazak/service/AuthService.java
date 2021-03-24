@@ -1,5 +1,6 @@
 package ru.vokazak.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.UserDao;
@@ -7,17 +8,12 @@ import ru.vokazak.dao.UserModel;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
     private final UserDao userDao;
     private final DigestService digestService;
     private final Converter<UserModel, UserDTO> userDTOConverter;
-
-    public AuthService(UserDao userDao, DigestService digestService, Converter<UserModel, UserDTO> userDTOConverter) {
-        this.userDao = userDao;
-        this.digestService = digestService;
-        this.userDTOConverter = userDTOConverter;
-    }
 
     public UserDTO getUserById(long userId) {
         UserModel userModel = userDao.findById(userId);

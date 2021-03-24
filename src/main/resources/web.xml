@@ -6,111 +6,13 @@
          version="3.1">
 
     <servlet>
-        <servlet-name>AuthServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.AuthServlet</servlet-class>
+        <servlet-name>MainServlet</servlet-name>
+        <servlet-class>ru.vokazak.web.MainServlet</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>AuthServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
 
-    <servlet>
-        <servlet-name>TransServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.TransServlet</servlet-class>
-    </servlet>
     <servlet-mapping>
-        <servlet-name>TransServlet</servlet-name>
-        <url-pattern>/trans</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.RegisterServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RegisterServlet</servlet-name>
-        <url-pattern>/register</url-pattern>
-    </servlet-mapping>
-    
-    <servlet>
-        <servlet-name>AccCreateServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.accServlets.AccCreateServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AccCreateServlet</servlet-name>
-        <url-pattern>/createAcc</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>AccDeleteServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.accServlets.AccDeleteServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AccDeleteServlet</servlet-name>
-        <url-pattern>/deleteAcc</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>AccListServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.accServlets.AccListServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AccListServlet</servlet-name>
-        <url-pattern>/listAcc</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>AccModifyServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.accServlets.AccModifyServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>AccModifyServlet</servlet-name>
-        <url-pattern>/modifyAcc</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>TransTypeCreateServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.transTypeServlets.TransTypeCreateServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TransTypeCreateServlet</servlet-name>
-        <url-pattern>/createCategory</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>TransTypeDeleteServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.transTypeServlets.TransTypeDeleteServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TransTypeDeleteServlet</servlet-name>
-        <url-pattern>/deleteCategory</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>TransTypeListServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.transTypeServlets.TransTypeListServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TransTypeListServlet</servlet-name>
-        <url-pattern>/listCategory</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>TransTypeModifyServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.transTypeServlets.TransTypeModifyServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TransTypeModifyServlet</servlet-name>
-        <url-pattern>/modifyCategory</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
-        <servlet-name>StatsServlet</servlet-name>
-        <servlet-class>ru.vokazak.web.StatsServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>StatsServlet</servlet-name>
-        <url-pattern>/stats</url-pattern>
+        <servlet-name>MainServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
