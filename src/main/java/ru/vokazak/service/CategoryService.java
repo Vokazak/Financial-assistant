@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.CategoryDao;
-import ru.vokazak.dao.CategoryModel;
+import ru.vokazak.entity.Category;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.math.BigDecimal;
@@ -17,41 +17,41 @@ import java.util.stream.Collectors;
 public class CategoryService {
 
     private final CategoryDao categoryDao;
-    private final Converter<CategoryModel, CategoryDTO> converter;
+    private final Converter<Category, CategoryDTO> converter;
 
     public CategoryDTO create(String name) {
 
-        CategoryModel categoryModel = categoryDao.insert(name);
-        if (categoryModel == null) {
+        Category category = categoryDao.insert(name);
+        if (category == null) {
             throw new UnsuccessfulCommandExecutionExc("Error in CategoryService while creating category");
         }
 
-        return converter.convert(categoryModel);
+        return converter.convert(category);
     }
 
     public CategoryDTO delete(String name) {
 
-        CategoryModel categoryModel = categoryDao.delete(name);
-        if (categoryModel == null) {
+        Category category = categoryDao.delete(name);
+        if (category == null) {
             throw new UnsuccessfulCommandExecutionExc("Error in CategoryService while deleting category");
         }
 
-        return converter.convert(categoryModel);
+        return converter.convert(category);
     }
 
     public CategoryDTO modify(String oldName, String newName) {
 
-        CategoryModel categoryModel = categoryDao.update(oldName, newName);
-        if (categoryModel == null) {
+        Category category = categoryDao.update(oldName, newName);
+        if (category == null) {
             throw new UnsuccessfulCommandExecutionExc("Error in CategoryService while deleting category");
         }
 
-        return converter.convert(categoryModel);
+        return converter.convert(category);
     }
 
     public Map<CategoryDTO, BigDecimal> getMoneySpentForEachTransType(long userId, int days) {
 
-        Map<CategoryModel, BigDecimal> categoryStats = categoryDao.sumMoneyForEachCategory(userId, days);
+        Map<Category, BigDecimal> categoryStats = categoryDao.sumMoneyForEachCategory(userId, days);
         if (categoryStats == null) {
             throw new UnsuccessfulCommandExecutionExc("Error in CategoryService while deleting category");
         }
@@ -63,7 +63,7 @@ public class CategoryService {
     }
 
     public List<CategoryDTO> getAll() {
-        List<CategoryModel> categoryModelList = categoryDao.selectAll();
+        List<Category> categoryModelList = categoryDao.selectAll();
         if (categoryModelList.isEmpty()) {
             throw new UnsuccessfulCommandExecutionExc("No categories found in data base");
         }

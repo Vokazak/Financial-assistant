@@ -5,9 +5,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.vokazak.converter.CategoryModelToCategoryDTOConverter;
+import ru.vokazak.converter.CategoryEntityToCategoryDTOConverter;
 import ru.vokazak.dao.CategoryDao;
-import ru.vokazak.dao.CategoryModel;
+import ru.vokazak.entity.Category;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.math.BigDecimal;
@@ -23,28 +23,29 @@ public class CategoryServiceTest {
     @InjectMocks CategoryService subj;
 
     @Mock CategoryDao categoryDao;
-    @Mock CategoryModelToCategoryDTOConverter converter;
+    @Mock
+    CategoryEntityToCategoryDTOConverter converter;
 
     @Test
     public void create_successful() {
-        CategoryModel categoryModel = new CategoryModel();
-        categoryModel.setId(1);
-        categoryModel.setName("Salary");
+        Category category = new Category();
+        category.setId(1L);
+        category.setTransType("Salary");
 
-        when(categoryDao.insert("Salary")).thenReturn(categoryModel);
+        when(categoryDao.insert("Salary")).thenReturn(category);
 
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setId(1);
         categoryDTO.setName("Salary");
 
-        when(converter.convert(categoryModel)).thenReturn(categoryDTO);
+        when(converter.convert(category)).thenReturn(categoryDTO);
 
-        CategoryDTO category = subj.create("Salary");
+        CategoryDTO categoryDTO1 = subj.create("Salary");
         assertNotNull(category);
-        assertEquals(categoryDTO, category);
+        assertEquals(categoryDTO1, categoryDTO);
 
         verify(categoryDao, times(1)).insert("Salary");
-        verify(converter, times(1)).convert(categoryModel);
+        verify(converter, times(1)).convert(category);
     }
 
     @Test
@@ -62,9 +63,9 @@ public class CategoryServiceTest {
 
     @Test
     public void delete_successful() {
-        CategoryModel categoryModel = new CategoryModel();
-        categoryModel.setId(1);
-        categoryModel.setName("Salary");
+        Category categoryModel = new Category();
+        categoryModel.setId(1L);
+        categoryModel.setTransType("Salary");
 
         when(categoryDao.delete("Salary")).thenReturn(categoryModel);
 
@@ -97,9 +98,9 @@ public class CategoryServiceTest {
 
     @Test
     public void modify_successful() {
-        CategoryModel categoryModel = new CategoryModel();
-        categoryModel.setId(1);
-        categoryModel.setName("Salary");
+        Category categoryModel = new Category();
+        categoryModel.setId(1L);
+        categoryModel.setTransType("Salary");
 
         when(categoryDao.update("Salary", "Income")).thenReturn(categoryModel);
 
@@ -131,16 +132,16 @@ public class CategoryServiceTest {
 
     @Test
     public void getMoneySpent_successful() {
-        CategoryModel categoryModel1 = new CategoryModel();
-        categoryModel1.setId(1);
-        categoryModel1.setName("Salary");
+        Category category1 = new Category();
+        category1.setId(1L);
+        category1.setTransType("Salary");
 
-        CategoryModel categoryModel2 = new CategoryModel();
-        categoryModel2.setId(2);
-        categoryModel2.setName("Purchase");
+        Category categoryModel2 = new Category();
+        categoryModel2.setId(2L);
+        categoryModel2.setTransType("Purchase");
 
-        Map<CategoryModel, BigDecimal> categoryStats = new HashMap<>();
-        categoryStats.put(categoryModel1, new BigDecimal("123.4"));
+        Map<Category, BigDecimal> categoryStats = new HashMap<>();
+        categoryStats.put(category1, new BigDecimal("123.4"));
         categoryStats.put(categoryModel2, new BigDecimal("432.1"));
 
         when(categoryDao.sumMoneyForEachCategory(1, 60)).thenReturn(categoryStats);
@@ -157,7 +158,7 @@ public class CategoryServiceTest {
         accountDTOMap.put(categoryDTO1, new BigDecimal("123.4"));
         accountDTOMap.put(categoryDTO2, new BigDecimal("432.1"));
 
-        when(converter.convert(categoryModel1)).thenReturn(categoryDTO1);
+        when(converter.convert(category1)).thenReturn(categoryDTO1);
         when(converter.convert(categoryModel2)).thenReturn(categoryDTO2);
 
         Map<CategoryDTO, BigDecimal> result = subj.getMoneySpentForEachTransType(1, 60);
@@ -165,7 +166,7 @@ public class CategoryServiceTest {
         assertEquals(result, accountDTOMap);
 
         verify(categoryDao, times(1)).sumMoneyForEachCategory(1, 60);
-        verify(converter, times(1)).convert(categoryModel1);
+        verify(converter, times(1)).convert(category1);
         verify(converter, times(1)).convert(categoryModel2);
 
     }

@@ -1,104 +1,63 @@
 package ru.vokazak.dao;
 
 import org.springframework.stereotype.Service;
+import ru.vokazak.entity.Account;
+import ru.vokazak.entity.Category;
+import ru.vokazak.entity.Transaction;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.util.List;
 
 @Service
 public class TransDao {
 
-    public TransDao() {
+    @PersistenceContext
+    private EntityManager em;
+
+    @Transactional
+    public Transaction insertFrom(String description, Account accFrom, BigDecimal money, List<Category> categories) {
+        Transaction transaction = new Transaction();
+        transaction.setDescription(description);
+        transaction.setDate(new Date(System.currentTimeMillis()));
+        transaction.setMoney(money);
+        transaction.setAccFrom(accFrom);
+        transaction.setCategories(categories);
+
+        em.persist(transaction);
+        return transaction;
     }
 
-    public TransModel insertFrom(Connection connection, String description, long accFromId, BigDecimal money) {
+    @Transactional
+    public Transaction insertTo(String description, Account accTo, BigDecimal money, List<Category> categories) {
+        Transaction transaction = new Transaction();
+        transaction.setDescription(description);
+        transaction.setDate(new Date(System.currentTimeMillis()));
+        transaction.setMoney(money);
+        transaction.setAccTo(accTo);
+        transaction.setCategories(categories);
 
-        try {
-            PreparedStatement ps = connection.prepareStatement(
-                    "insert into transaction (trans_date, description, acc_from, trans_money) VALUES (?, ?, ?, ?);",
-                    Statement.RETURN_GENERATED_KEYS
-            );
-
-            Date transDate = new Date(System.currentTimeMillis());
-            ps.setDate(1, new Date(System.currentTimeMillis()));
-            ps.setString(2, description);
-            ps.setLong(3, accFromId);
-            ps.setBigDecimal(4, money);
-
-            ps.executeUpdate();
-
-            connection.commit();
-            return getTransModel(ps.getGeneratedKeys(), transDate, description, money);
-        } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc(e);
-        }
-    }
-
-    public TransModel insertTo(Connection connection, String description, long accToId, BigDecimal money) {
-
-        try {
-            PreparedStatement ps = connection.prepareStatement(
-                    "insert into transaction (trans_date, description, acc_to, trans_money) VALUES (?, ?, ?, ?);",
-                    Statement.RETURN_GENERATED_KEYS
-            );
-
-            Date transDate = new Date(System.currentTimeMillis());
-            ps.setDate(1, transDate);
-            ps.setString(2, description);
-            ps.setLong(3, accToId);
-            ps.setBigDecimal(4, money);
-
-            ps.executeUpdate();
-
-            connection.commit();
-            return getTransModel(ps.getGeneratedKeys(), transDate, description, money);
-        } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc(e);
-        }
+        em.persist(transaction);
+        return transaction;
 
     }
 
-    public TransModel insert(Connection connection, String description, long accFromId, long accToId, BigDecimal money) {
+    @Transactional
+    public Transaction insert(String description, Account accFrom, Account accTo, BigDecimal money, List<Category> categories) {
+        Transaction transaction = new Transaction();
+        transaction.setDescription(description);
+        transaction.setDate(new Date(System.currentTimeMillis()));
+        transaction.setMoney(money);
+        transaction.setAccFrom(accFrom);
+        transaction.setAccTo(accTo);
+        transaction.setCategories(categories);
 
-        try {
-            PreparedStatement ps = connection.prepareStatement(
-                    "insert into transaction (trans_date, description, acc_from, acc_to, trans_money) VALUES (?, ?, ?, ?, ?);",
-                    Statement.RETURN_GENERATED_KEYS
-            );
-
-            Date transDate = new Date(System.currentTimeMillis());
-            ps.setDate(1, transDate);
-            ps.setString(2, description);
-            ps.setLong(3, accFromId);
-            ps.setLong(4, accToId);
-            ps.setBigDecimal(5, money);
-
-            ps.executeUpdate();
-
-            connection.commit();
-            return getTransModel(ps.getGeneratedKeys(), transDate, description, money);
-        } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc(e);
-        }
+        em.persist(transaction);
+        return transaction;
     }
 
-    private TransModel getTransModel(ResultSet rs, Date date, String description, BigDecimal money) {
-        try {
-            if (rs.next()) {
-                TransModel transModel = new TransModel();
-                transModel.setId(rs.getLong(1));
-                transModel.setDate(date);
-                transModel.setDescription(description);
-                transModel.setMoney(money);
-
-                return transModel;
-            } else {
-                throw new UnsuccessfulCommandExecutionExc("Can't generate id");
-            }
-
-        } catch (SQLException e) {
-            throw new UnsuccessfulCommandExecutionExc(e);
-        }
-    }
 }

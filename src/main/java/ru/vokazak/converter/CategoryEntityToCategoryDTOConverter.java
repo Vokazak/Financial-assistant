@@ -1,17 +1,17 @@
 package ru.vokazak.converter;
 
 import org.springframework.stereotype.Service;
-import ru.vokazak.dao.CategoryModel;
+import ru.vokazak.entity.Category;
 import ru.vokazak.service.CategoryDTO;
 
 @Service
-public class CategoryModelToCategoryDTOConverter implements Converter<CategoryModel, CategoryDTO> {
+public class CategoryEntityToCategoryDTOConverter implements Converter<Category, CategoryDTO> {
 
     @Override
-    public CategoryDTO convert(CategoryModel source) {
+    public CategoryDTO convert(Category source) {
         CategoryDTO categoryDTO = new CategoryDTO();
         categoryDTO.setId(source.getId());
-        categoryDTO.setName(source.getName());
+        categoryDTO.setName(source.getTransType());
 
         return categoryDTO;
     }

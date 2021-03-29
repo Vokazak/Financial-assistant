@@ -1,13 +1,13 @@
 package ru.vokazak.converter;
 
 import org.springframework.stereotype.Service;
-import ru.vokazak.dao.UserModel;
+import ru.vokazak.entity.User;
 import ru.vokazak.service.UserDTO;
 
 @Service
-public class UserModelToUserDTOConverter implements Converter<UserModel, UserDTO> {
+public class UserToUserDTOConverter implements Converter<User, UserDTO> {
     @Override
-    public UserDTO convert(UserModel source) {
+    public UserDTO convert(User source) {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(source.getId());
         userDTO.setEmail(source.getEmail());

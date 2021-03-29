@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.UserDao;
-import ru.vokazak.dao.UserModel;
+import ru.vokazak.entity.User;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 @Service
@@ -13,38 +13,38 @@ public class AuthService {
 
     private final UserDao userDao;
     private final DigestService digestService;
-    private final Converter<UserModel, UserDTO> userDTOConverter;
+    private final Converter<User, UserDTO> userDTOConverter;
 
     public UserDTO getUserById(long userId) {
-        UserModel userModel = userDao.findById(userId);
+        User user = userDao.findById(userId);
 
-        if (userModel == null) {
+        if (user == null) {
             throw new UnsuccessfulCommandExecutionExc("User with id=" + userId + " was not found");
         }
 
-        return userDTOConverter.convert(userModel);
+        return userDTOConverter.convert(user);
     }
 
     public UserDTO auth(String email, String password) {
         String hash = digestService.hex(password);
 
-        UserModel userModel = userDao.findByEmailAndHash(email, hash);
-        if (userModel == null) {
+        User user = userDao.findByEmailAndHash(email, hash);
+        if (user == null) {
             throw new UnsuccessfulCommandExecutionExc("Login error in AuthService");
         }
 
-        return userDTOConverter.convert(userModel);
+        return userDTOConverter.convert(user);
     }
 
     public UserDTO register(String email, String password, String name, String surname) {
         String hash = digestService.hex(password);
 
-        UserModel userModel = userDao.insert(name, surname, email, hash);
-        if (userModel == null) {
+        User user = userDao.insert(name, surname, email, hash);
+        if (user == null) {
             throw new UnsuccessfulCommandExecutionExc("Registration error in AuthService");
         }
 
-        return userDTOConverter.convert(userModel);
+        return userDTOConverter.convert(user);
     }
 
 }

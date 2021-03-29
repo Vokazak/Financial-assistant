@@ -1,7 +1,10 @@
 package ru.vokazak;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import ru.vokazak.view.RequestHandler;
+
+import javax.persistence.EntityManager;
 
 /*
 12o34p, artvas@gmail.com
@@ -35,6 +38,9 @@ disconnect ()
 
 Example:
 login artvas@gmail.com 12o34p
+show_stats_for 60
+register test123@mail.ru qwerty Test Testov
+create_trans_type Test
 create_trans TestTransaction AccForSalary AccForEverydayTrans TransferBetweenOwnAccs 3000
 */
 

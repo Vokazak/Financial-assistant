@@ -4,7 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.AccountDao;
-import ru.vokazak.dao.AccountModel;
+import ru.vokazak.dao.UserDao;
+import ru.vokazak.entity.Account;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import ru.vokazak.view.RequestHandler;
 
@@ -17,21 +18,21 @@ import java.util.List;
 public class AccService {
 
     private final AccountDao accountDao;
-    private final Converter<AccountModel, AccountDTO> accDTOConverter;
+    private final Converter<Account, AccountDTO> accDTOConverter;
 
     public AccountDTO create(String name, BigDecimal balance, long userId) {
 
-        AccountModel accountModel = accountDao.insert(name, balance, userId);
-        if (accountModel == null) {
+        Account account = accountDao.insert(name, balance, userId);
+        if (account == null) {
             throw new UnsuccessfulCommandExecutionExc("Error in AuthService while creating account");
         }
 
-        return accDTOConverter.convert(accountModel);
+        return accDTOConverter.convert(account);
     }
 
     public AccountDTO delete(String name, long userId) {
 
-        AccountModel accToDelete = accountDao.delete(name, userId);
+        Account accToDelete = accountDao.delete(name, userId);
         if (accToDelete == null) {
             throw new UnsuccessfulCommandExecutionExc("Error while deleting account");
         }
@@ -53,7 +54,7 @@ public class AccService {
 
     public List<AccountDTO> getAccList(long userId) {
 
-        List<AccountModel> accountModelList = accountDao.findByUserId(userId);
+        List<Account> accountModelList = accountDao.findByUserId(userId);
         if (accountModelList == null) {
             throw new UnsuccessfulCommandExecutionExc("Error in AuthService while listing accounts");
         }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.vokazak.converter.Converter;
 import ru.vokazak.dao.TransCreate;
-import ru.vokazak.dao.TransModel;
+import ru.vokazak.entity.Transaction;
 
 import java.math.BigDecimal;
 
@@ -12,13 +12,13 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 public class TransService {
 
-    private final Converter<TransModel, TransDTO> converter;
+    private final Converter<Transaction, TransDTO> converter;
     private final TransCreate transCreate;
 
     public TransDTO createTransaction(String description, AccountDTO accFrom, AccountDTO accTo, CategoryDTO category, BigDecimal money) {
 
-        TransModel transModel = transCreate.createTransaction(description, accFrom, accTo, category, money);
-        return converter.convert(transModel);
+        Transaction transaction = transCreate.createTransaction(description, accFrom, accTo, category, money);
+        return converter.convert(transaction);
     }
 
 }

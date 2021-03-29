@@ -1,13 +1,13 @@
 package ru.vokazak.converter;
 
 import org.springframework.stereotype.Service;
-import ru.vokazak.dao.TransModel;
+import ru.vokazak.entity.Transaction;
 import ru.vokazak.service.TransDTO;
 
 @Service
-public class TransModelToTransDTOConverter implements Converter<TransModel, TransDTO> {
+public class TransactionToTransDTOConverter implements Converter<Transaction, TransDTO> {
     @Override
-    public TransDTO convert(TransModel source) {
+    public TransDTO convert(Transaction source) {
         TransDTO transDTO = new TransDTO();
         transDTO.setDate(source.getDate());
         transDTO.setDescription(source.getDescription());
