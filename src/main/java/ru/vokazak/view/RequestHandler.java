@@ -2,11 +2,17 @@ package ru.vokazak.view;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
 import ru.vokazak.SpringContext;
 import ru.vokazak.commandAnalyzer.*;
+import ru.vokazak.entity.Category;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 import ru.vokazak.service.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;

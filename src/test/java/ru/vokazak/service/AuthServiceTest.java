@@ -5,9 +5,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.vokazak.converter.UserModelToUserDTOConverter;
+import ru.vokazak.converter.UserToUserDTOConverter;
 import ru.vokazak.dao.UserDao;
-import ru.vokazak.dao.UserModel;
+import ru.vokazak.entity.User;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import static org.junit.Assert.*;
@@ -20,7 +20,8 @@ public class AuthServiceTest {
 
     @Mock UserDao userDao;
     @Mock DigestService digestService;
-    @Mock UserModelToUserDTOConverter userDTOConverter;
+    @Mock
+    UserToUserDTOConverter userDTOConverter;
 
     @Test
     public void auth_UserNotFound() {
@@ -48,8 +49,8 @@ public class AuthServiceTest {
         when(digestService.hex("password"))
                 .thenReturn("hex");
 
-        UserModel userModel = new UserModel();
-        userModel.setId(1);
+        User userModel = new User();
+        userModel.setId(1L);
         userModel.setEmail("artvas@gmail.com");
         userModel.setPassword("hex");
         when(userDao.findByEmailAndHash("artvas@gmail.com", "hex"))
@@ -77,8 +78,8 @@ public class AuthServiceTest {
         when(digestService.hex("password"))
                 .thenReturn("hex");
 
-        UserModel userModel = new UserModel();
-        userModel.setId(1);
+        User userModel = new User();
+        userModel.setId(1L);
         userModel.setEmail("artvas@gmail.com");
         userModel.setPassword("hex");
         userModel.setName("Artyom");

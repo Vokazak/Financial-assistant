@@ -3,6 +3,7 @@ package ru.vokazak.dao;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.vokazak.entity.User;
 
 import java.util.UUID;
 
@@ -24,28 +25,28 @@ public class UserDaoTest {
 
     @Test
     public void findByEmailAndHash_successful() {
-        UserModel userModel = subj.findByEmailAndHash("invdov@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
+        User user = subj.findByEmailAndHash("invdov@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
 
-        assertEquals(1L, userModel.getId());
-        assertEquals("invdov@gmail.com", userModel.getEmail());
-        assertEquals("65fcbb39532c342a6a3c92fa9acf1157", userModel.getPassword());
+        assertEquals(Long.valueOf(1), user.getId());
+        assertEquals("invdov@gmail.com", user.getEmail());
+        assertEquals("65fcbb39532c342a6a3c92fa9acf1157", user.getPassword());
     }
 
     @Test
     public void insert_successful() {
-        UserModel userModel = subj.insert("Inna", "Vdovina", "invdov2@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
+        User user = subj.insert("Inna", "Vdovina", "invdov2@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
 
-        assertEquals(2, userModel.getId());
-        assertEquals("invdov2@gmail.com", userModel.getEmail());
-        assertEquals("65fcbb39532c342a6a3c92fa9acf1157", userModel.getPassword());
-        assertEquals("Inna", userModel.getName());
-        assertEquals("Vdovina", userModel.getSurname());
+        assertEquals(Long.valueOf(2), user.getId());
+        assertEquals("invdov2@gmail.com", user.getEmail());
+        assertEquals("65fcbb39532c342a6a3c92fa9acf1157", user.getPassword());
+        assertEquals("Inna", user.getName());
+        assertEquals("Vdovina", user.getSurname());
 
     }
 
     @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
     public void insert_unsuccessful() {
-        UserModel userModel = subj.insert("Inna", "Vdovina", "invdov@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
+        User user = subj.insert("Inna", "Vdovina", "invdov@gmail.com", "65fcbb39532c342a6a3c92fa9acf1157");
 
     }
 }

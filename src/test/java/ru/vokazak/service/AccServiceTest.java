@@ -5,9 +5,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import ru.vokazak.converter.AccModelToAccDTOConverter;
+import ru.vokazak.converter.AccEntityToAccDTOConverter;
 import ru.vokazak.dao.AccountDao;
-import ru.vokazak.dao.AccountModel;
+import ru.vokazak.entity.Account;
 import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import java.math.BigDecimal;
@@ -23,16 +23,17 @@ public class AccServiceTest {
     @InjectMocks AccService subj;
 
     @Mock AccountDao accountDao;
-    @Mock AccModelToAccDTOConverter accDTOConverter;
+    @Mock
+    AccEntityToAccDTOConverter accDTOConverter;
 
     @Test
     public void create_successful() {
 
-        AccountModel accountModel = new AccountModel();
-        accountModel.setId(1);
+        Account accountModel = new Account();
+        accountModel.setId(1L);
         accountModel.setName("MainAcc");
         accountModel.setBalance(new BigDecimal("123.4"));
-        accountModel.setUserId(2);
+        //accountModel.setUserId(2);
 
         when(accountDao.insert("MainAcc", new BigDecimal("123.4"), 1))
                 .thenReturn(accountModel);
@@ -71,11 +72,11 @@ public class AccServiceTest {
 
     @Test
     public void delete_successful() {
-        AccountModel accountModel = new AccountModel();
-        accountModel.setId(1);
+        Account accountModel = new Account();
+        accountModel.setId(1L);
         accountModel.setName("MainAcc");
         accountModel.setBalance(new BigDecimal("123.4"));
-        accountModel.setUserId(2);
+        //accountModel.setUserId(2);
 
         when(accountDao.delete("MainAcc",  2))
                 .thenReturn(accountModel);
@@ -114,19 +115,19 @@ public class AccServiceTest {
 
     @Test
     public void getAccList_successful() {
-        AccountModel accountModel1 = new AccountModel();
-        accountModel1.setId(1);
+        Account accountModel1 = new Account();
+        accountModel1.setId(1L);
         accountModel1.setName("MainAcc");
         accountModel1.setBalance(new BigDecimal("123.4"));
-        accountModel1.setUserId(2);
+        //accountModel1.setUserId(2);
 
-        AccountModel accountModel2 = new AccountModel();
-        accountModel2.setId(2);
+        Account accountModel2 = new Account();
+        accountModel2.setId(2L);
         accountModel2.setName("SecondAcc");
         accountModel2.setBalance(new BigDecimal("432.1"));
-        accountModel2.setUserId(2);
+        //accountModel2.setUserId(2);
 
-        List<AccountModel> accountModelList = new ArrayList<>();
+        List<Account> accountModelList = new ArrayList<>();
         accountModelList.add(accountModel1);
         accountModelList.add(accountModel2);
 

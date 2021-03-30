@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.vokazak.entity.Account;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -31,69 +32,66 @@ public class AccountDaoTest {
 
     @Test
     public void insert_successful() {
-        AccountModel accountModel = subj.insert("TestAcc2", new BigDecimal("123.4"), 1);
+        Account account = subj.insert("TestAcc2", new BigDecimal("123.4"), 1);
 
-        assertEquals(3, accountModel.getId());
-        assertEquals(new BigDecimal("123.4"), accountModel.getBalance());
-        assertEquals("TestAcc2", accountModel.getName());
-        assertEquals(1, accountModel.getUserId());
+        assertEquals(Long.valueOf(3), account.getId());
+        assertEquals(new BigDecimal("123.4"), account.getBalance());
+        assertEquals("TestAcc2", account.getName());
     }
 
     @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
     public void insert_unsuccessful() {
-        AccountModel accountModel = subj.insert("TestAcc", new BigDecimal("123.4"), 1);
+        Account account = subj.insert("TestAcc", new BigDecimal("123.4"), 4);
     }
 
     @Test
     public void update_successful() throws SQLException {
-        subj.update(context.getBean(DataSource.class).getConnection(), 1, new BigDecimal("432.1"));
+        subj.update(1, new BigDecimal("432.1"));
     }
 
     @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
     public void update_unsuccessful() throws SQLException {
-        subj.update(context.getBean(DataSource.class).getConnection(), 1, new BigDecimal("-432.1"));
+        subj.update(4, new BigDecimal("-432.1"));
     }
 
     @Test
     public void delete_successful() {
-        AccountModel accountModel = subj.insert("TestAcc2", new BigDecimal("123.4"), 1);
+        Account account = subj.insert("TestAcc2", new BigDecimal("123.4"), 1);
 
-        AccountModel accountModelDel = subj.delete("TestAcc2", 1);
+        Account accountDel = subj.delete("TestAcc2", 1);
 
-        assertEquals(3, accountModel.getId());
-        assertEquals("TestAcc2", accountModel.getName());
-        assertEquals(new BigDecimal("123.4"), accountModel.getBalance());
-        assertEquals(1, accountModel.getUserId());
+        assertEquals(Long.valueOf(3), account.getId());
+        assertEquals("TestAcc2", account.getName());
+        assertEquals(new BigDecimal("123.4"), account.getBalance());
     }
 
     @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
     public void delete_unsuccessful() {
-        AccountModel accountModel = subj.delete("TestAcc", 2);
+        Account account = subj.delete("TestAcc", 2);
     }
 
     @Test
     public void findByUserId_successful() {
-        List<AccountModel> modelList = subj.findByUserId(1);
+        List<Account> modelList = subj.findByUserId(1);
 
         assertEquals(2, modelList.size());
-        AccountModel accountModel = modelList.get(0);
+        Account accountModel = modelList.get(0);
 
-        assertEquals(1, accountModel.getId());
+        assertEquals(Long.valueOf(1), accountModel.getId());
         assertEquals("TestAcc", accountModel.getName());
         assertEquals(new BigDecimal("123.4"), accountModel.getBalance());
-        assertEquals(1, accountModel.getUserId());
+        assertEquals(Long.valueOf(1L), accountModel.getId());
 
-        AccountModel accountModel2 = modelList.get(1);
+        Account account2 = modelList.get(1);
 
-        assertEquals(2, accountModel2.getId());
-        assertEquals("AnotherTestAcc", accountModel2.getName());
-        assertEquals(new BigDecimal("123.4"), accountModel2.getBalance());
-        assertEquals(1, accountModel2.getUserId());
+        assertEquals(Long.valueOf(2), account2.getId());
+        assertEquals("AnotherTestAcc", account2.getName());
+        assertEquals(new BigDecimal("123.4"), account2.getBalance());
     }
 
     @Test
     public void findByUserId_unsuccessful() {
-        List<AccountModel> modelList = subj.findByUserId(2);
+        List<Account> modelList = subj.findByUserId(2);
 
         assertEquals(0, modelList.size());
 
