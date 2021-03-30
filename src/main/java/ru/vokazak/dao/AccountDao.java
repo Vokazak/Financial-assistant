@@ -6,6 +6,7 @@ import ru.vokazak.exception.UnsuccessfulCommandExecutionExc;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,42 +19,54 @@ public class AccountDao {
 
     @Transactional
     public Account insert(String name, BigDecimal balance, long userId) {
-        Account account = new Account();
-        account.setName(name);
-        account.setBalance(balance);
-        account.setUserId(userId);
+        try {
+            Account account = new Account();
+            account.setName(name);
+            account.setBalance(balance);
+            account.setUserId(userId);
 
-        em.persist(account);
-        return account;
+            em.persist(account);
+            return account;
+        } catch (PersistenceException e) {
+            throw new UnsuccessfulCommandExecutionExc(e);
+        }
     }
 
     @Transactional
     public void update(long id, BigDecimal balance) {
-        Account account = em.find(Account.class, id);
-        account.setBalance(balance);
+        try {
+            Account account = em.find(Account.class, id);
+            account.setBalance(balance);
+        } catch (Exception e) {
+            throw new UnsuccessfulCommandExecutionExc(e);
+        }
     }
 
     @Transactional
     public Account delete(String name, long userId) {
-        Account account = em.createNamedQuery("Account.find", Account.class)
-                .setParameter("name", name)
-                .setParameter("userId", userId)
-                .getSingleResult();
+        try {
+            Account account = em.createNamedQuery("Account.find", Account.class)
+                    .setParameter("name", name)
+                    .setParameter("userId", userId)
+                    .getSingleResult();
 
-        if (account == null) {
-            throw new UnsuccessfulCommandExecutionExc("\"" + name + "\" account does not exist");
+            if (account == null) {
+                throw new UnsuccessfulCommandExecutionExc("\"" + name + "\" account does not exist");
+            }
+
+            if (!account.getTransOut().isEmpty() || !account.getTransIn().isEmpty()) {
+                throw new UnsuccessfulCommandExecutionExc("\"" + name + "\" account has transactions");
+            }
+
+            em.createNamedQuery("Account.delete")
+                    .setParameter("name", name)
+                    .setParameter("userId", userId)
+                    .executeUpdate();
+
+            return account;
+        } catch (PersistenceException e) {
+            throw new UnsuccessfulCommandExecutionExc(e);
         }
-
-        if (!account.getTransOut().isEmpty() || !account.getTransIn().isEmpty()) {
-            throw new UnsuccessfulCommandExecutionExc("\"" + name + "\" account has transactions");
-        }
-
-        em.createNamedQuery("Account.delete")
-                .setParameter("name", name)
-                .setParameter("userId", userId)
-                .executeUpdate();
-
-        return account;
     }
 
     @Transactional

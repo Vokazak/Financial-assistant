@@ -114,11 +114,11 @@
                 <constraints unique="false" nullable="false" />
             </column>
 
-            <column name="acc_from" type="int">
+            <column name="acc_from" type="long">
                 <constraints unique="false" nullable="true" foreignKeyName="fk_acc1_id" references="account(id)"/>
             </column>
 
-            <column name="acc_to" type="int">
+            <column name="acc_to" type="long">
                 <constraints unique="false" nullable="true" foreignKeyName="fk_acc2_id" references="account(id)"/>
             </column>
 
@@ -158,5 +158,13 @@
 
     </changeSet>
 
+    <changeSet id="renameInTransTable" author="vokazak">
+        <renameColumn tableName="transaction" oldColumnName="acc_from" newColumnName="acc_from_id"/>
+        <renameColumn tableName="transaction" oldColumnName="acc_to" newColumnName="acc_to_id"/>
+    </changeSet>
+
+    <changeSet id="uniqueCategory" author="vokazak">
+        <addUniqueConstraint tableName="category" columnNames="trans_type"/>
+    </changeSet>
     
 </databaseChangeLog>

@@ -37,24 +37,21 @@ public class AccountDaoTest {
         assertEquals(Long.valueOf(3), account.getId());
         assertEquals(new BigDecimal("123.4"), account.getBalance());
         assertEquals("TestAcc2", account.getName());
-        assertEquals(Long.valueOf(1), account.getId());
     }
 
     @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
     public void insert_unsuccessful() {
-        Account account = subj.insert("TestAcc", new BigDecimal("123.4"), 1);
+        Account account = subj.insert("TestAcc", new BigDecimal("123.4"), 4);
     }
 
     @Test
     public void update_successful() throws SQLException {
-        //subj.update(context.getBean(DataSource.class).getConnection(), 1, new BigDecimal("432.1"));
         subj.update(1, new BigDecimal("432.1"));
     }
 
     @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
     public void update_unsuccessful() throws SQLException {
-        //subj.update(context.getBean(DataSource.class).getConnection(), 1, new BigDecimal("-432.1"));
-        subj.update(1, new BigDecimal("-432.1"));
+        subj.update(4, new BigDecimal("-432.1"));
     }
 
     @Test
@@ -66,7 +63,6 @@ public class AccountDaoTest {
         assertEquals(Long.valueOf(3), account.getId());
         assertEquals("TestAcc2", account.getName());
         assertEquals(new BigDecimal("123.4"), account.getBalance());
-        assertEquals(Long.valueOf(1), account.getId());
     }
 
     @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
@@ -91,7 +87,6 @@ public class AccountDaoTest {
         assertEquals(Long.valueOf(2), account2.getId());
         assertEquals("AnotherTestAcc", account2.getName());
         assertEquals(new BigDecimal("123.4"), account2.getBalance());
-        assertEquals(Long.valueOf(1), account2.getId());
     }
 
     @Test

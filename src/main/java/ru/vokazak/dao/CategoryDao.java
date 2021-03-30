@@ -82,10 +82,16 @@ public class CategoryDao {
 
     @Transactional
     public Map<Category, BigDecimal> sumMoneyForEachCategory(long userId, int days) {
-        List<Transaction> transList = em.createQuery("SELECT t FROM Transaction t where t.date > :date AND (t.accFrom.userId = :uid OR t.accTo.userId = :uid)", Transaction.class)
-                .setParameter("uid", userId)
-                .setParameter("date", Date.from(Instant.now().minus(Duration.ofDays(days))))
-                .getResultList();
+
+        List<Transaction> transList;
+        try {
+            transList = em.createQuery("SELECT t FROM Transaction t where t.date > :date AND (t.accFrom.userId = :uid OR t.accTo.userId = :uid)", Transaction.class)
+                    .setParameter("uid", userId)
+                    .setParameter("date", Date.from(Instant.now().minus(Duration.ofDays(days))))
+                    .getResultList();
+        } catch (Exception e) {
+            throw new UnsuccessfulCommandExecutionExc(e);
+        }
 
         Map<Category, BigDecimal> resultMap = new HashMap<>();
         transList.forEach(t -> t.getCategories()

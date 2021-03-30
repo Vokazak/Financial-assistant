@@ -36,10 +36,10 @@ public class Account {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToMany(mappedBy = "accFrom", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "accFrom", fetch = FetchType.LAZY)
     private List<Transaction> transOut;
 
-    @OneToMany(mappedBy = "accTo", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "accTo", fetch = FetchType.LAZY)
     private List<Transaction> transIn;
 
 

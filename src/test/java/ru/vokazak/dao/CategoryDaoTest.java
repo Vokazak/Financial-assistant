@@ -79,9 +79,9 @@ public class CategoryDaoTest {
 
     }
 
-    @Test(expected = ru.vokazak.exception.UnsuccessfulCommandExecutionExc.class)
-    public void sumMoneyForEachCategory_unsuccessful() {
-        Map<Category, BigDecimal> stats = subj.sumMoneyForEachCategory(2, 20);
+    @Test
+    public void sumMoneyForEachCategory_successful() {
+        Map<Category, BigDecimal> stats = subj.sumMoneyForEachCategory(1, 20);
     }
 
 }

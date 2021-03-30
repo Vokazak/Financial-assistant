@@ -1,6 +1,5 @@
 package ru.vokazak.dao;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import ru.vokazak.entity.Account;
 import ru.vokazak.entity.Category;
@@ -21,13 +20,11 @@ public class TransCreate {
     private final DataSource dataSource;
     private final AccountDao accountDao;
     private final TransDao transDao;
-    private final TransToCategoryDao transToCategoryDao;
 
-    public TransCreate(DataSource dataSource, AccountDao accountDao, TransDao transDao, TransToCategoryDao transToCategoryDao) {
+    public TransCreate(DataSource dataSource, AccountDao accountDao, TransDao transDao) {
         this.dataSource = dataSource;
         this.accountDao = accountDao;
         this.transDao = transDao;
-        this.transToCategoryDao = transToCategoryDao;
     }
 
     public Transaction createTransaction(String description, AccountDTO accFrom, AccountDTO accTo, CategoryDTO category, BigDecimal money) {
@@ -51,7 +48,7 @@ public class TransCreate {
                     accountFrom.setName(accFrom.getName());
                     accountFrom.setId(accFrom.getId());
 
-                    if (accFrom.getBalance().compareTo(money) > 0) {
+                    if (accFrom.getBalance().compareTo(money) >= 0) {
                         accountDao.update(accFrom.getId(), accFrom.getBalance().subtract(money));
                     } else {
                         throw new UnsuccessfulCommandExecutionExc("Insufficient funds");
@@ -77,9 +74,6 @@ public class TransCreate {
                 } else if (accFrom != null) {
                     transModel = transDao.insertFrom(description, accountFrom, money, Collections.singletonList(c));
                 } else throw new UnsuccessfulCommandExecutionExc("Invalid parameters");
-
-                //update category
-                //transToCategoryDao.insert(connection, transModel.getId(), category.getId());
 
                 connection.commit();
                 return transModel;

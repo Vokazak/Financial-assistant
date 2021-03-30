@@ -28,11 +28,11 @@ public class Transaction {
     @Column(name = "trans_money")
     private BigDecimal money;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "acc_from_id")
     private Account accFrom;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "acc_to_id")
     private Account accTo;
 
